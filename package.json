@@ -1,0 +1,10 @@
+{
+    "name": "node-red-contrib-alarm-manager",
+    "author": "gemini86",
+    "node-red": {
+        "nodes": {}
+    },
+    "devDependencies": {
+        "eslint": "^8.25.0"
+    }
+}

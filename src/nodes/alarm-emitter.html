@@ -1,0 +1,28 @@
+<script type="text/javascript">
+	RED.nodes.registerType('alarm-emitter',{
+		category: 'function',
+		color: '#a6bbcf',
+		defaults: {
+			name: { value: '' },
+			alarmManager: {value: '', type: 'alarm-manager'}
+		},
+		inputs:0,
+		outputs:1,
+		icon: "alert.svg",
+		label: function() {
+			return this.name || this.alarmManager + ' emitter';
+		}
+	});
+</script>
+
+<!--all this must change-->
+<script type="text/html" data-template-name="lower-case">
+	<div class="form-row">
+		<label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+		<input type="text" id="node-input-name" placeholder="Name">
+	</div>
+</script>
+
+<script type="text/html" data-help-name="lower-case">
+	<p>A simple node that converts the message payloads into all lower-case characters</p>
+</script>

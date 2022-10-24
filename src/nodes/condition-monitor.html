@@ -1,0 +1,56 @@
+<script type="text/javascript">RED.nodes.registerType('condition-monitor',{
+		category: 'alarm manager',
+		color: '#a6bbcf',
+		defaults: {
+			name: { value: '' },
+			alarmId: { value: '', required: true },
+			highAlarm: { value: 8, required: true },
+			lowAlarm: { value: 4, required: true },
+			delayMinutes: { value: 5, required: true },
+			debug: { value: false, required: true },
+			alarmManager: {value: '', type: 'alarm-manager'}
+		},
+		inputs:1,
+		outputs:0,
+		icon: "alert.svg",
+		label: function() {
+			return this.name || this.alarmId;
+		}
+});
+</script>
+
+<!--all this must change-->
+<script type="text/html" data-template-name="condition-monitor">
+	<div class="form-row">
+		<label for="node-input-alarmManager"><i class="fa fa-android"></i> Alarm Manager</label>
+		<input type="text" id="node-input-alarmManager" placeholder="">
+	</div>
+	<div class="form-row">
+		<label for="node-input-alarmId">Alarm Id</label>
+		<input type="text" id="node-input-alarmId" placeholder="required">
+	</div>
+	<div class="form-row">
+		<label for="node-input-highAlarm">High Alarm</label>
+		<input type="text" id="node-input-highAlarm" placeholder="">
+	</div>
+	<div class="form-row">
+		<label for="node-input-lowAlarm">Low Alarm</label>
+		<input type="text" id="node-input-lowAlarm" placeholder="">
+	</div>
+	<div class="form-row">
+		<label for="node-input-delayMinutes">Delay (minutes)</label>
+		<input type="text" id="node-input-delayMinutes" placeholder="">
+	</div>
+	<div class="form-row">
+		<label for="node-input-debug"><i class="fa fa-bug"></i> Debug</label>
+		<input type="checkbox" id="node-input-debug" placeholder="">
+	</div>
+	<div class="form-row">
+		<label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+		<input type="text" id="node-input-name" placeholder="">
+	</div>
+</script>
+
+<script type="text/html" data-help-name="condition-monitor">
+	<p>monitors conditions</p>
+</script>

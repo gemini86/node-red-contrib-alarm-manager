@@ -9,7 +9,8 @@ module.exports = function (RED) {
 		node.debug = config.debug;
 
 		//retrive the config node
-		node.alarmManager = RED.nodes.getNode(config.alarmManager);
+		node.alarmManager = RED.nodes.getNode(config.alarmManager).manager;
+		node.alarm = node.alarmManager.getAlarm(node.alarmId);
 
 		node.on('input', function (msg) {
 			if (typeof msg.payload != 'number') {
@@ -35,17 +36,37 @@ module.exports = function (RED) {
 						node.info(msg);
 					}
 					node.alarmManager.setAlarm(msg.payload);
-				}, node.delayInterval, msg);
+					node.alarmSent = true;
+				}, node.delayInterval, msg.payload);
 
-				//update status
+				//update status TODO
 			} else if (msg.payload <= this.lowAlarm) {
 				//store pending alarm
-				//update status
+				node.alarm = {
+					id: node.alarmId,
+					timestamp: Date.now(),
+					type: 'low',
+					limit: node.lowAlarm,
+					value: msg.payload
+				};
+				//update status TODO
 			} else {
-				//cancel pending alarm
-				//update status
+				if (node.alarm) {
+					if (node.alarmSent) {
+						//clear sent alarm alarm
+						node.alarm.type = 'clear';
+						node.alarm.clearTimestamp = Date.now();
+					} else {
+						//cancel pending alarm
+						clearTimeout(node.alarmTimer);
+						delete node.alarmTimer;
+						delete node.alarm;
+					}
+				}
+				//update status TODO
 			}
 		});
+
 	}
 	RED.nodes.registerType('condition monitor', ConditionMonitorNode);
 };

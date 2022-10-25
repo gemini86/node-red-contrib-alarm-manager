@@ -1,12 +1,12 @@
 {
 	"name": "node-red-contrib-alarm-manager",
 	"author": "gemini86",
-	"version": "0.0.1",
+	"version": "0.0.4",
   "node-red": {
 		"nodes": {
-			"alarm-manager": "alarm-manager.js",
-			"alarm-emitter": "alarm-emitter.js",
-			"condition-monitor": "condition-monitor.js"
+			"alarm-manager": "src/nodes/alarm-manager.js",
+			"alarm-emitter": "src/nodes/alarm-emitter.js",
+			"condition-monitor": "src/nodes/condition-monitor.js"
 		}
 	},
 	"devDependencies": {

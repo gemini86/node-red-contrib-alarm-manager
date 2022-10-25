@@ -2,12 +2,18 @@ module.exports = function (RED) {
 	function AlarmEmitterNode(config) {
 		RED.nodes.createNode(this, config);
 		let node = this;
-		node.alarmManager = RED.nodes.getNode(config.alarmManager).manager;
+		node.debug = config.debug;
+		node.alarmManager = RED.nodes.getNode(config.alarmManager);
 
-		node.alarmManager.on('alarms', (msg) => {
-			node.send(msg);
-		});
+		if (node.alarmManager) {
+			if (node.debug) {
+				node.warn('connected to ' + node.alarmManager.name);
+			}
 
+			node.alarmManager.on('alarms', (msg) => {
+				node.send(msg);
+			});
+		}
 	}
-	RED.nodes.registerType('alarm emitter', AlarmEmitterNode);
+	RED.nodes.registerType('alarm-emitter', AlarmEmitterNode);
 };

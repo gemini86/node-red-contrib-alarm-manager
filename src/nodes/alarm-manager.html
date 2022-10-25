@@ -2,8 +2,12 @@
 	RED.nodes.registerType('alarm-manager',{
 		category: 'config',
 		defaults: {
-			name: {value:"", required: true}
+			name: { value: '', required: true },
+			delayMinutes: {	value: '', validate: RED.validators.number(), required: true },
+			resendMinutes: { value: '', validate: RED.validators.number(), required: true },
+			debug: { value: false, required: false }
 		},
+		paletteLabel: 'Alarm Manager',
 		label: function() {
 			return this.name;
 		}
@@ -12,8 +16,20 @@
 
 <script type="text/html" data-template-name="alarm-manager">
 	<div class="form-row">
-		<label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-		<input type="text" id="node-input-name" placeholder="Name">
+		<label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+		<input type="text" id="node-config-input-name" placeholder="Name (Required)">
+	</div>
+	<div class="form-row">
+		<label for="node-config-input-delayMinutes">Delay (minutes)</label>
+		<input type="text" id="node-config-input-delayMinutes" placeholder="0.5">
+	</div>
+	<div class="form-row">
+		<label for="node-config-input-resendMinutes">Resend on interval (minutes)</label>
+		<input type="text" id="node-config-input-resendMinutes" placeholder="30">
+	</div>
+	<div class="form-row">
+		<label for="node-config-input-debug"><i class="fa fa-bug"></i> Debug</label>
+		<input type="checkbox" id="node-config-input-debug">
 	</div>
 </script>
 

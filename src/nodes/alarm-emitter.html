@@ -4,19 +4,29 @@
 		color: '#a6bbcf',
 		defaults: {
 			name: { value: '' },
+			debug: { value: false },
 			alarmManager: {value: '', type: 'alarm-manager'}
 		},
+		paletteLabel: 'alarm emitter',
 		inputs:0,
 		outputs:1,
 		icon: "alert.svg",
 		label: function() {
-			return this.name || this.alarmManager + ' emitter';
+			return this.name || 'alarm emitter'//this.alarmManager + ' emitter';
 		}
 	});
 </script>
 
 <!--all this must change-->
 <script type="text/html" data-template-name="alarm-emitter">
+	<div class="form-row">
+		<label for="node-input-alarmManager"><i class="fa fa-android"></i> Alarm Manager</label>
+		<input type="text" id="node-input-alarmManager">
+	</div>
+	<div class="form-row">
+		<label for="node-input-debug"><i class="fa fa-bug"></i> Name</label>
+		<input type="checkbox" id="node-input-debug" placeholder="Name">
+	</div>
 	<div class="form-row">
 		<label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
 		<input type="text" id="node-input-name" placeholder="Name">

@@ -2,157 +2,234 @@ module.exports = function (RED) {
 	function AlarmManagerNode(config) {
 		RED.nodes.createNode(this, config);
 		let node = this;
-		let nodeContext = this.context();
+		this.name = config.name;
 		node.delayInterval = config.delayMinutes * 60000;
 		node.resendInterval = config.resendMinutes * 60000;
 		node.debug = config.debug; //when enabled, will send all new alarms to the node.log;
 
-		class AlarmManager {
-			constructor(currentAlarms) {
-				this.currentAlarms = currentAlarms;
+		let nodeContext = node.context();
 
-				this.timeout = {
-					parent: this,
-					isRunning: function () {
-						return this._pointer ? true : false;
-					},
-					timeLeft: function () {
-						if (this.timeStarted) {
-							return Date.now() - this.timeStarted;
-						}
-						return;
-					},
-					startTimeout: function (timeout) {
-						//if there's an interval running, clear it and delete pointer.
-						if (parent.interval.isRunning) {
-							parent.interval.stopInterval();
-						}
-						this.timeStarted = Date.now();
-						this._pointer = setTimeout(function (parent) {
-							parent.sendAlarms(parent.currentAlarms);
-							parent.timeout.stopTimeout();
-						}, timeout, this.parent);
-					},
-					stopTimeout: function () {
-						clearTimeout(this._pointer);
-						delete this._pointer;
-						delete this.timeStarted;
-					}
-				};
+		node.alarmNodeRegistry = nodeContext.get('monitorNodeRegistry') || new Map();
 
-				this.interval = {
-					parent: this, //stores the parent scope to be used in class methods
-					isRunning: function () {
-						return this._pointer ? true : false;
-					},
-					startInterval: function (intervalTime) {
-						this.timeStarted = this.timeAtLastInterval = Date.now();
-						this._pointer = setInterval(function (parent) {
-							parent.interval.timeAtLastInterval = Date.now();
-							parent.sendAlarms(parent.currentAlarms);
-						}, intervalTime, this.parent);
-					},
-					stopInterval: function () {
-						clearInterval(this._pointer);
-						delete this._pointer;
-						delete this.timeStarted;
-						delete this.timeAtLastInterval;
-					}
-				};
+		node.currentAlarms = nodeContext.get('currentAlarms') || new Map();
+		
+		let timeout = {
+			//parent: this,
+			get isRunning () {
+				return timeout._pointer ? true : false;
+			},
+			timeLeft: function () {
+				if (timeout.timeStarted) {
+					return Date.now() - timeout.timeStarted;
+				}
+				return;
 			}
+		};
 
-			sendAlarms(alarms) {
-				if (Object.getOwnPropertyNames(alarms).length() > 0) {
-					node.emit('alarms', alarms);
+		let interval = {
+			//parent: this, //stores the parent scope to be used in class methods
+			get isRunning () {
+				if (interval._pointer) {
 					if (node.debug) {
-						node.log('alarms sent: ' + alarms);
+						node.warn('Interval running: ' + interval._pointer);
 					}
-					//start interval after sending
-					if (node.resendInterval) {
-						this.interval.startInterval(node.resendInterval);
-					}
+					return true;
 				} else {
-					node.warn('Warning: alarms not send because there are none.');
-				}
-			}
-
-			getAlarm(id) {
-				let result = Object.prototype.hasOwnProperty.call(this.currentAlarms, id);
-				if (result) {
-					return result.value;
-				}
-				return result;
-			}
-
-			setAlarm(alarm) {
-				//check if an alarm for this id already exists
-				if (Object.prototype.hasOwnProperty.call(this.currentAlarms, alarm.id)) {
-					//update the alarm value
-					this.currentAlarms[alarm.id].value = alarm.value;
-				} else {
-					//set new alarm
-					alarm.persistent = false;
-					this.currentAlarms[alarm.id] = alarm;
-					if (node.delayInterval) {
-						this.timeout.startTimeout(node.delayInterval);
-					} else {
-						this.sendAlarms(this.currentAlarms);
-					}
 					if (node.debug) {
-						node.log(alarm);
+						node.warn('No interval running');
 					}
-				}
-			}
-
-			clearAlarm(alarm) {
-				//check if alarm already exists
-				if (Object.prototype.hasOwnProperty.call(this.currentAlarms, alarm.id)) {
-					//has it already been sent?
-					if (this.currentAlarms[alarm.id].persistent) {
-						this.currentAlarms[alarm.id] = alarm; //update alarm (this clear alarm object will have 'clearTimestamp' property with the time of alarm clearing and a 'type' property of "clear")
-						if (node.delayInterval) {
-							this.timeout.startTimeout(node.delayInterval);
-						} else {
-							this.sendAlarms(this.currentAlarms);
-						}
-					} else {
-						//if it's not been sent, delete it right away.
-						delete currentAlarms[alarm.id];
-						this.checkAlarmsCount(); //this will check if there are other alarms and cancel any timeouts and/or intervals
-					}
-				} else {
-					node.error('This alarm does not exist and cannot be cleared: ' + alarm);
-				}
-			}
-
-			clearAlarms() {
-				this.timeout.stopTimeout();
-				this.interval.stopInterval();
-				this.currentAlarms = {};
-			}
-
-			checkAlarmsCount() {
-				let count = Object.getOwnPropertyNames(currentAlarms).length;
-				if (count > 0) {
-					return count;
-				} else {
-					this.currentAlarms = {};
-					this.interval.stopInterval();
-					this.timeout.stopTimeout();
 					return false;
 				}
 			}
+		};
 
-			get currentAlarms() {
-				return this.currentAlarms;
+		function startTimeout(time) {
+			timeout.timeStarted = Date.now();
+			timeout._pointer = setTimeout(function () {
+				sendAlarms(node.currentAlarms);
+				stopTimeout();
+				//check if there are alarms to send
+				checkAlarmsCount();
+				//if no interval is running
+				if (interval.isRunning == false) {
+					//start interval after sending
+					if (node.resendInterval) {
+						startInterval(node.resendInterval);
+					}
+				}
+			}, time);
+			//if there's an interval running, clear it and delete pointer.
+			if (interval.isRunning == true) {
+				stopInterval();
 			}
-			
 		}
 
-		let currentAlarms = nodeContext.currentAlarms || {};
+		function stopTimeout () {
+			timeout._pointer = clearTimeout(timeout._pointer);
+			delete timeout.timeStarted;
+		}
 
-		node.manager = new AlarmManager(currentAlarms);
+		function startInterval (time) {
+			interval.timeStarted = interval.timeAtLastInterval = Date.now();
+			if (!interval.isRunning) {
+				interval._pointer = setInterval(function () {
+					interval.timeAtLastInterval = Date.now();
+					sendAlarms(node.currentAlarms);
+					checkAlarmsCount();
+				}, time);
+			}
+		}
 
+		function stopInterval () {
+			interval._pointer = clearInterval(interval._pointer);
+			delete interval.timeStarted;
+			delete interval.timeAtLastInterval;
+		}
+
+		function sendAlarms(alarms) {
+			//TODO set all alarms sent as persistent after sending.
+			if (Object.getOwnPropertyNames(alarms).length > 0) {
+				let msg = { payload: alarms };
+				let toSend = RED.util.cloneMessage(msg);
+				node.emit('alarms', toSend);
+				//mark all sent alarms as persistent (unless cleared alarms, delete those)
+				Object.getOwnPropertyNames(alarms).forEach(item => {
+					if (node.currentAlarms[item].type == 'clear') {
+						node.currentAlarms.delete(item);
+					} else {
+						node.currentAlarms[item].persistent.set(true);
+					}
+				});
+				nodeContext.set('currentAlarms', node.currentAlarms);
+				
+				if (node.debug) {
+					node.warn('alarms sent: ' + JSON.stringify(msg));
+				}				
+			} else {
+				node.warn('Warning: alarms not sent because there are none.');
+			}
+		}
+
+		node.getAlarm = function (alarmId) {
+			return node.currentAlarms[alarmId];
+		};
+
+		node.setAlarm = function (msg) {
+			let alarm = msg.payload;
+			//check if an alarm for this id already exists
+			if (node.currentAlarms.has(alarm.id)) {
+				//update the alarm value
+				let thisAlarm = node.currentAlarms.get(alarm.id);
+				thisAlarm.value = alarm.value;
+				node.currentAlarms.set(alarm.id,thisAlarm);
+			} else {
+				//set new alarm
+				alarm.persistent = false;
+				node.currentAlarms.set(alarm.id, alarm);
+				if (node.delayInterval) {
+					//if no timeout is running, start one
+					if (!timeout.isRunning) {
+						startTimeout(node.delayInterval);
+					}
+				} else {
+					sendAlarms(node.currentAlarms);
+				}
+				if (node.debug) {
+					node.warn('Alarm set: ' + JSON.stringify(alarm));
+					node.warn('Current alarms: ' + JSON.stringify(node.currentAlarms));
+				}
+			}
+			nodeContext.set('currentAlarms', node.currentAlarms);
+		};
+
+		node.clearAlarm = function (msg) {
+			let alarm = msg.payload;
+			//check if alarm already exists
+			if (node.currentAlarms.has(alarm.id)) {
+				//has it already been sent?
+				if (node.currentAlarms.get(alarm.id).persistent) {
+					node.currentAlarms.set(alarm.id, alarm); //update alarm (this clear alarm object will have 'clearTimestamp' property with the time of alarm clearing and a 'type' property of "clear")
+					if (node.delayInterval) {
+						if (!timeout.isRunning) {
+							startTimeout(node.delayInterval);
+						}
+					} else {
+						sendAlarms(node.currentAlarms);
+					}
+				} else {
+					//if it's not been sent, delete it right away.
+					node.currentAlarms.delete(alarm.id);
+					checkAlarmsCount(); //this will check if there are other alarms and cancel any timeouts and/or intervals
+				}
+				node.warn('Alarm cleared:' + JSON.stringify(alarm));
+				nodeContext.set('currentAlarms', node.currentAlarms);
+			} else {
+				node.error('This alarm does not exist and cannot be cleared: ' + alarm);
+			}
+		};
+
+		node.registerAlarmNode = function (alarmNode, callback, errCallback) {
+			//check if the node is already registered
+			if (node.alarmNodeRegistry[alarmNode.id]) {
+				if (node.currentAlarms.has(alarmNode.alarmId)) {
+					return node.currentAlarms.get(alarmNode.alarmId);
+				}
+			} else {
+				//check if the alarmId is unique
+				let nodeFound;
+				let registryKeys = [...node.alarmNodeRegistry.keys()];
+				for (let thisNode of registryKeys) {
+					if (alarmNode.alarmId == thisNode.alarmId) {
+						nodeFound = true;
+						break;
+					}
+				}
+				if (nodeFound) {
+					errCallback(`Error, ${alarmNode.alarmId} is already being used as an alarm ID. All alarm IDs must be unique.`, alarmNode);
+				} else {
+					node.alarmNodeRegistry.set(alarmNode.id, alarmNode);
+					if (node.debug) {
+						callback('Alarm node registered: ' + alarmNode.alarmId + ':' + alarmNode.id);
+						callback('Alarm nodes registry: ' + JSON.stringify(node.alarmNodeRegistry));
+					}
+				}
+			}
+		};
+
+		node.unregisterAlarmNode = function (alarmNode) {
+			if (node.alarmNodeRegistry.has(alarmNode.id)) {
+				if (node.currentAlarms.has(alarmNode.alarmId)) {
+					let msg = {
+						payload: node.currentAlarms.get(alarmNode.alarmId)
+					};
+					node.clearAlarm(msg);
+				}
+			}
+		};
+
+		function checkAlarmsCount() {
+			if (node.debug) {
+				node.warn('Check alarms count- Current alarms: ' + JSON.stringify(node.currentAlarms));
+			}
+			if (node.currentAlarms.size > 0) {
+				return node.currentAlarms.size;
+			} else {
+				stopInterval();
+				stopTimeout();
+				return false;
+			}
+
+		}
+
+		if (node.debug) {
+			node.warn('Current alarms: ' + JSON.stringify(node.currentAlarms));
+		}
+
+		node.on('close', () => {
+			node.stopInterval();
+			node.startTimeout();
+			nodeContext.set('currentAlarms', node.currentAlarms);
+		});
 	}
-	RED.nodes.registerType('alarm manager', AlarmManagerNode);
+	RED.nodes.registerType('alarm-manager', AlarmManagerNode);
 };

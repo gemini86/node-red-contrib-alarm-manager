@@ -9,6 +9,7 @@ module.exports = function (RED) {
 			if (node.debug) {
 				node.warn('connected to ' + node.alarmManager.name);
 			}
+			node.status({ text: 'connected to ' + node.alarmManager.name, shape: 'dot', fill: 'green' });
 
 			node.alarmManager.on('alarms', (msg) => {
 				node.send(msg);

@@ -60,7 +60,6 @@ module.exports = function (RED) {
 			node.alarm = node.alarmManager.registerAlarmNode(node, (err, alarmNode) => {
 				node.error(err, alarmNode);
 				node.status({ text: err, shape: 'dot', fill: 'red' });
-				node.done(err);
 			});
 
 			if (node.alarm) {

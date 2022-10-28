@@ -9,7 +9,13 @@
 		},
 		paletteLabel: 'alarms peristence hook',
 		inputs:1,
-		outputs:1,
+		outputs: 2,
+		outputLabels: function (i) {
+			return [
+				'alarms object',
+				'alarm stream'
+			][i];
+		},
 		icon: 'file.svg',
 		label: function() {
 			return this.name || 'alarms persistence hook';
@@ -30,6 +36,7 @@
 
 <script type="text/html" data-help-name="persistence-hook">
 	<p>Allows alarms to be pushed to and from persistent storage within your flow</p>
-	<p>Output will be all alarms as an object, sent whenever the alarm emitter would normally send. Use this to store alarms in a persistent storage.</p>
+	<p>Output 1 will be all alarms as an object, sent whenever the alarm emitter would normally send. Use this to store alarms in a persistent storage.</p>
+	<p>Output 2 will be each alarm event as they are received from all inpout nodes. This is useful for keeping an alarm log.</p>
 	<p>Input accepts the stored alarms object from your flows persistent storage and will overwrite any alarms in the alarm manager. This will also reset the resend interval (if configured) and delayed send timer (if configured)</p>
 </script>

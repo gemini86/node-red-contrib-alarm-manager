@@ -3,12 +3,13 @@
 	"author": "gemini86",
 	"version": "0.1.0",
   "node-red": {
-		"nodes": {
-			"alarm-manager": "src/nodes/alarm-manager.js",
-			"alarm-emitter": "src/nodes/alarm-emitter.js",
-			"persistence-hook":  "src/nodes/persistence-hook.js",
-			"condition-monitor": "src/nodes/condition-monitor.js"
-		}
+	"nodes": {
+		"alarm-manager": "src/nodes/alarm-manager.js",
+		"alarm-emitter": "src/nodes/alarm-emitter.js",
+		"persistence-hook": "src/nodes/persistence-hook.js",
+		"condition-monitor": "src/nodes/condition-monitor.js",
+		"status-monitor": "src/nodes/status-monitor.js"
+	}
 	},
 	"devDependencies": {
 		"eslint": "^8.25.0"

@@ -41,10 +41,18 @@ module.exports = function (RED) {
 
 		node.unregisterAlarmNode = function (alarmNode) {
 			if (node.alarmNodeRegistry.has(alarmNode.id)) {
+				if (node.debug) {
+					node.warn('Node to be unregistered :' + alarmNode.id);
+				}
 				if (node.currentAlarms.has(alarmNode.alarmId)) {
+					if (node.debug) {
+						node.warn('Alarm to be cleared: ' + alarmNode.alarmId);
+					}
 					let msg = {
-						payload: node.currentAlarms.get(alarmNode.alarmId)
+						payload: node.currentAlarms.get(alarmNode.alarmId),
 					};
+					msg.payload.type = 'clear';
+					msg.payload.clearTimestamp = Date.now();
 					node.clearAlarm(msg);
 				}
 				node.alarmNodeRegistry.delete(alarmNode.id);
@@ -64,15 +72,19 @@ module.exports = function (RED) {
 				node.currentAlarms.set(alarm.id, alarm);
 				if (node.debug) {
 					node.warn('Alarm set: ' + JSON.stringify(alarm));
-					node.warn('Current alarms: ' + JSON.stringify(node.currentAlarms));
+					node.warn('Current alarms: ' + JSON.stringify(node.currentAlarms.entries()));
 				}
+				let alarmEvent = {
+					payload: alarm
+				};
+				node.emit('alarmEvent', alarmEvent);
 				if (node.delayInterval) {
 					//if no timeout is running, start one
 					if (!timeout.isRunning) {
-						startTimeout(node.delayInterval);
+						startTimeout(node.delayInterval, 'new alarms');
 					}
 				} else {
-					sendAlarms(node.currentAlarms);
+					sendAlarms(node.currentAlarms, 'new alarms');
 				}
 			}
 			nodeContext.set('currentAlarms', node.currentAlarms);
@@ -94,6 +106,13 @@ module.exports = function (RED) {
 				payload: node.currentAlarms,
 			};
 			node.emit('alarmPush', msg);
+			if (node.currentAlarms.size > 0) {
+				if (node.delayInterval) {
+					startTimeout(node.delayInterval, 'persistent alarms');
+				} else {
+					sendAlarms(node.currentAlarms, 'persistent alarms');
+				}
+			}
 		};
 
 		node.clearAlarm = function (msg) {
@@ -106,16 +125,20 @@ module.exports = function (RED) {
 					delete node.currentAlarms.get(alarm.id).persistent; //needed to make sure alarms marked as "clear" are not also marked as "persistent"
 					if (node.delayInterval) {
 						if (!timeout.isRunning) {
-							startTimeout(node.delayInterval);
+							startTimeout(node.delayInterval, 'alarms cleared');
 						}
 					} else {
-						sendAlarms(node.currentAlarms);
+						sendAlarms(node.currentAlarms, 'alarms cleared');
 					}
 				} else {
 					//if it's not been sent, delete it right away.
 					node.currentAlarms.delete(alarm.id);
 					checkAlarmsCount(); //this will check if there are other alarms and cancel any timeouts and/or intervals
 				}
+				let alarmEvent = {
+					payload: alarm
+				};
+				node.emit('alarmEvent', alarmEvent);
 				if (node.debug) {
 					node.warn('Alarm cleared:' + JSON.stringify(alarm));
 					nodeContext.set('currentAlarms', node.currentAlarms);
@@ -130,7 +153,7 @@ module.exports = function (RED) {
 			node.currentAlarms.clear();
 			stopInterval();
 			stopTimeout();
-			startInterval(node.delayInterval);
+			startTimeout(node.delayInterval);
 		};
 		
 		let timeout = {
@@ -163,10 +186,11 @@ module.exports = function (RED) {
 			}
 		};
 
-		function startTimeout(time) {
+		function startTimeout(time, reason) {
 			timeout.timeStarted = Date.now();
 			timeout._pointer = setTimeout(function () {
-				sendAlarms(node.currentAlarms);
+				sendAlarms(node.currentAlarms, reason);
+				updatePersistence();
 				stopTimeout();
 				//check if there are alarms to send
 				checkAlarmsCount();
@@ -194,7 +218,7 @@ module.exports = function (RED) {
 			if (!interval.isRunning) {
 				interval._pointer = setInterval(function () {
 					interval.timeAtLastInterval = Date.now();
-					sendAlarms(node.currentAlarms);
+					sendAlarms(node.currentAlarms, 'persistent alarms');
 					checkAlarmsCount();
 				}, time);
 			}
@@ -206,12 +230,14 @@ module.exports = function (RED) {
 			delete interval.timeAtLastInterval;
 		}
 
-		function sendAlarms(alarms) {
+		function sendAlarms(alarms, reason) {
 			//TODO set all alarms sent as persistent after sending.
 			if (alarms.size > 0) {
-				let msg = { payload: Object.fromEntries(alarms) };
+				let msg = {
+					topic: reason,
+					payload: Object.fromEntries(alarms)
+				};
 				node.emit('alarms', RED.util.cloneMessage(msg));
-				node.emit('persist', RED.util.cloneMessage(msg));
 				//mark all sent alarms as persistent (unless cleared alarms, delete those)
 				Array.from(alarms.keys()).forEach(key => {
 					if (node.currentAlarms.get(key).type == 'clear') {
@@ -220,6 +246,10 @@ module.exports = function (RED) {
 						node.currentAlarms.get(key).persistent = true;
 					}
 				});
+				if (node.currentAlarms.size == 0) {
+					stopInterval();
+					updatePersistence();
+				}
 				nodeContext.set('currentAlarms', node.currentAlarms);
 				
 				if (node.debug) {
@@ -241,10 +271,17 @@ module.exports = function (RED) {
 			} else {
 				stopInterval();
 				stopTimeout();
-				node.emit('persist', { payload: {} });
 				return false;
 			}
 
+		}
+
+		function updatePersistence() {
+			let msg = {
+				topic: 'persistence storage',
+				payload: Object.fromEntries(node.currentAlarms.entries())
+			};
+			node.emit('persist', RED.util.cloneMessage(msg));
 		}
 
 		if (node.debug) {
@@ -269,7 +306,7 @@ module.exports = function (RED) {
 
 		node.on('close', () => {
 			node.stopInterval();
-			node.startTimeout();
+			node.stopTimeout();
 			nodeContext.set('currentAlarms', node.currentAlarms);
 		});
 	}

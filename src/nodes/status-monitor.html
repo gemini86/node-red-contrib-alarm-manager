@@ -1,0 +1,66 @@
+<script type="text/javascript">RED.nodes.registerType('status-monitor',{
+		category: 'alarm manager',
+		color: '#a6bbcf',
+		defaults: {
+			name: { value: '' },
+			alarmId: { value: '', required: true },
+			alarmType: { value: 'fault', required: false },
+			goodInputs: { value: '', required: false },
+			badInputs: { value: '', validate: RED.validators.number(), required: true },
+			acceptBool: { value: false, required: true },
+			debug: { value: false, required: true },
+			alarmManager: {value: '', type: 'alarm-manager'}
+		},
+		paletteLabel: 'status monitor',
+		inputs:1,
+		outputs:0,
+		icon: "alert.svg",
+	label: function () {
+		return this.name || `status monitor: ${this.alarmId}`;
+		}
+});
+</script>
+
+<!--all this must change-->
+<script type="text/html" data-template-name="status-monitor">
+	<div class="form-row">
+		<label for="node-input-alarmManager"><i class="fa fa-android"></i> Alarm Manager</label>
+		<input type="text" id="node-input-alarmManager">
+	</div>
+	<div class="form-row">
+		<label for="node-input-alarmId">Alarm Id</label>
+		<input type="text" id="node-input-alarmId" placeholder="">
+	</div>
+	<div class="form-row">
+		<label for="node-input-alarmType">The alarm type that should be displayed</label>
+		<input type="text" id="node-input-alarmType" placeholder="eg. 'Alarm' or 'Fault'">
+	</div>
+	<div class="form-row">
+		<label for="node-input-goodInputs">Good input string(s) (separate multiple values with a comma)</label>
+		<input type="text" id="node-input-goodInputs" placeholder="">
+	</div>
+	<div class="form-row">
+		<label for="node-input-badInputs">Bad input string(s) (separate multiple values with a comma)</label>
+		<input type="text" id="node-input-badInputs" placeholder="">
+	</div>
+	<div class="form-row">
+		<label for="node-input-delayMinutes">Delay to send alarm(minutes)</label>
+		<input type="text" id="node-input-delayMinutes" placeholder="5">
+	</div>
+	<div class="form-row">
+		<label for="node-input-acceptBool"><i class="fa fa-bug"></i> Accept boolean true/false on input?</label>
+		<input type="checkbox" id="node-input-acceptBool" placeholder="">
+	</div>
+	<div class="form-row">
+		<label for="node-input-debug"><i class="fa fa-bug"></i> Debug</label>
+		<input type="checkbox" id="node-input-debug" placeholder="">
+	</div>
+	<div class="form-row">
+		<label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+		<input type="text" id="node-input-name" placeholder="">
+	</div>
+</script>
+
+<script type="text/html" data-help-name="status-monitor">
+	<p>monitors status strings or boolean true/false conditions</p>
+</script>

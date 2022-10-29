@@ -75,6 +75,9 @@ module.exports = function (RED) {
 				node.alarm = msg.payload.get(node.alarmId);
 				node.alarmSent = true;
 				updateStatus('alarm', node.alarm);
+			} else {
+				delete node.alarm;
+				node.status({});
 			}
 		});
 
@@ -108,6 +111,9 @@ module.exports = function (RED) {
 			if (msg.enabled == true) {
 				node.enabled = true;
 				updateStatus('enabled');
+				if (done) {
+					done();
+				}
 				return;
 			}
 
@@ -127,13 +133,14 @@ module.exports = function (RED) {
 					//store pending alarm
 					msg.payload = node.alarm = createAlarmObject(msg.payload, 'high');
 
-					if (node.debug) {
-						node.warn('alarm pending: ' + JSON.stringify(node.alarm));
-					}
+					
 
 					if (node.alarmSent) {
 						updateStatus('alarm', node.alarm);
 						node.alarmManager.setAlarm(msg);
+						if (node.debug) {
+							node.warn('alarm sent: ' + JSON.stringify(node.alarm));
+						}
 					} else {
 						if (!node.alarmTimer) {
 							//start timer to hold pending alarm before sending to the alarm manager.
@@ -146,6 +153,9 @@ module.exports = function (RED) {
 								updateStatus('alarm', node.alarm);
 								node.alarmTimer = clearTimeout(node.alarmTimer);
 							}, node.delayInterval);
+						}
+						if (node.debug) {
+							node.warn('alarm pending: ' + JSON.stringify(node.alarm));
 						}
 					}
 					//update status

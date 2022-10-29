@@ -1,17 +1,27 @@
 {
-	"name": "node-red-contrib-alarm-manager",
+	"name": "@gemini86/node-red-contrib-alarm-manager",
 	"author": "gemini86",
 	"version": "0.1.0",
-  "node-red": {
-	"nodes": {
-		"alarm-manager": "src/nodes/alarm-manager.js",
-		"alarm-emitter": "src/nodes/alarm-emitter.js",
-		"persistence-hook": "src/nodes/persistence-hook.js",
-		"condition-monitor": "src/nodes/condition-monitor.js",
-		"status-monitor": "src/nodes/status-monitor.js"
-	}
+	"keywords": [ "alarm", "alarm manager", "alarm logger", "scheduler", "timer" ],
+	"node-red": {
+		"version": ">=2.0.0",
+		"nodes": {
+			"alarm-manager": "alarm-manager/alarm-manager.js",
+			"alarm-emitter": "alarm-manager/alarm-emitter.js",
+			"persistence-hook": "alarm-manager/persistence-hook.js",
+			"condition-monitor": "alarm-manager/condition-monitor.js",
+			"status-monitor": "alarm-manager/status-monitor.js"
+		}
 	},
 	"devDependencies": {
 		"eslint": "^8.25.0"
-	}
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/gemini86/node-red-contrib-alarm-manager.git"
+	},
+	"bugs": {
+		"url": "https://github.com/gemini86/node-red-contrib-alarm-manager/issues"
+	},
+	"homepage": "https://github.com/gemini86/node-red-contrib-alarm-manager#readme"
 }

@@ -154,6 +154,10 @@ module.exports = function (RED) {
 			stopInterval();
 			stopTimeout();
 			startTimeout(node.delayInterval);
+			let msg = {
+				payload: node.currentAlarms,
+			};
+			node.emit('alarmPush', msg);
 		};
 		
 		let timeout = {

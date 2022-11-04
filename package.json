@@ -1,7 +1,7 @@
 {
 	"name": "@gemini86/node-red-contrib-alarm-manager",
 	"author": "gemini86",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"keywords": [ "node-red", "alarm", "alarm manager", "alarm logger", "scheduler", "timer" ],
 	"engines": {
 		"node": ">=14.0.0"
@@ -27,5 +27,5 @@
 		"url": "https://github.com/gemini86/node-red-contrib-alarm-manager/issues"
 	},
 	"homepage": "https://github.com/gemini86/node-red-contrib-alarm-manager#readme",
-	"license": "Unlicense"
+	"license": "BSD-1-Clause"
 }

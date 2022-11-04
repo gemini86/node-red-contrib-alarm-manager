@@ -9,7 +9,14 @@
 		},
 		paletteLabel: 'alarm emitter',
 		inputs:0,
-		outputs:1,
+		outputs:3,
+		outputLabels: function (i) {
+			return [
+				'alarms',
+				'persistence',
+				'alarm event stream'
+			][i];
+		},
 		icon: "alert.svg",
 		label: function() {
 			return this.name || 'alarm emitter';
@@ -21,18 +28,41 @@
 <script type="text/html" data-template-name="alarm-emitter">
 	<div class="form-row">
 		<label for="node-input-alarmManager"><i class="fa fa-android"></i> Alarm Manager</label>
-		<input type="text" id="node-input-alarmManager">
+		<input type="text" id="node-input-alarmManager" style="width: 70%;">
 	</div>
 	<div class="form-row">
-		<label for="node-input-debug"><i class="fa fa-bug"></i> Name</label>
-		<input type="checkbox" id="node-input-debug" placeholder="Name">
+		<label for="node-input-debug"><i class="fa fa-bug"></i></label>
+		<input type="checkbox" id="node-input-debug" style="width: auto;">
+		<label for="node-input-debug">Debug</label>
 	</div>
 	<div class="form-row">
 		<label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-		<input type="text" id="node-input-name" placeholder="Name">
+		<input type="text" id="node-input-name" placeholder="Name" style="width: 70%;">
 	</div>
 </script>
 
 <script type="text/html" data-help-name="alarm-emitter">
-	<p>emits alarms</p>
+	<p>Emits alarm objects containing all alarms stored in the alarm manager</p>
+	
+	<h3>Outputs</h3>
+	<ol class="node-ports">
+		<li>Alarm notification output
+			<dl class="message-properties">
+				<dt>payload <span class="property-type">object</span></dt>
+				<dd>the current alarms stored in the alarm manager (sent every new alarm or alarm cleared, or when resend on interval is set.</dd>
+			</dl>
+		</li>
+		<li>Persistence storage output
+			<dl class="message-properties">
+				<dt>payload <span class="property-type">object</span></dt>
+				<dd>all alarms as an object, sent whenever the alarm emitter would normally send. Use this to store alarms in a persistent storage.</dd>
+			</dl>
+		</li>
+		<li>Alarm event stream output
+			<dl class="message-properties">
+				<dt>payload <span class="property-type">object</span></dt>
+				<dd>each alarm event as they are received from all input nodes. This is useful for keeping an alarm log.</dd>
+			</dl>
+		</li>
+	</ol>
 </script>

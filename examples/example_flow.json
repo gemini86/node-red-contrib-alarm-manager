@@ -12,12 +12,83 @@
 		"type": "group",
 		"z": "871b020ccee144a3",
 		"name": "The Status monitor only has an alarm condition or not. ",
-		"style": { "label": true },
-		"nodes": [ "5372b6b9d5a5fdcf", "c8817fbe8dcfd628", "b122b1b15ef683eb", "4be3227da3951794", "b2861ad9743b25e1", "0bb5c753e5806fee", "7ef8caa431d9447e" ],
+		"style": {
+			"label": true
+		},
+		"nodes": [
+			"5372b6b9d5a5fdcf",
+			"c8817fbe8dcfd628",
+			"b122b1b15ef683eb",
+			"4be3227da3951794",
+			"b2861ad9743b25e1",
+			"0bb5c753e5806fee",
+			"7ef8caa431d9447e"
+		],
 		"x": 48,
 		"y": 333,
 		"w": 1058,
 		"h": 508
+	},
+	{
+		"id": "4cccddb3717e5f7d",
+		"type": "group",
+		"z": "871b020ccee144a3",
+		"name": "The condition monitor has a high and low limit setpoint. Alarm conditions can be 'high' or 'low' alarms. ",
+		"style": {
+			"label": true
+		},
+		"nodes": [
+			"f48c9dcc7246f079",
+			"b61d31bbf65740ae",
+			"a25ebfabd83fbd2c",
+			"1215eb08c0bd4199",
+			"1e9d1484902ac894",
+			"2d07d567af863511",
+			"1fe4c3dbc04fdeae",
+			"6bbeed87c8032e99"
+		],
+		"x": 54,
+		"y": 39,
+		"w": 992,
+		"h": 262
+	},
+	{
+		"id": "fa7c5a52988d7128",
+		"type": "group",
+		"z": "871b020ccee144a3",
+		"name": "The alarm emitter will manage all alarm input nodes and their messages. If configured, can delay sending an output and/or resend the output at an interval.",
+		"style": {
+			"label": true
+		},
+		"nodes": [
+			"fc656cfce48d971d",
+			"e67ebb4e7a49ccfb",
+			"7fac5a3681f918fb",
+			"92eceb24d8d35cef",
+			"d3c84997dcd6e5ef"
+		],
+		"x": 54,
+		"y": 859,
+		"w": 967,
+		"h": 162
+	},
+	{
+		"id": "dc384bf00be008c6",
+		"type": "group",
+		"z": "871b020ccee144a3",
+		"name": "The alarms persistence hook allows you to inject an object of alarms from your flow's persistent context storage on startup",
+		"style": {
+			"label": true
+		},
+		"nodes": [
+			"58a6170b1db4b868",
+			"38c4ae42388aa3d9",
+			"653495cf30d5f01d"
+		],
+		"x": 54,
+		"y": 1059,
+		"w": 763,
+		"h": 162
 	},
 	{
 		"id": "b122b1b15ef683eb",
@@ -25,8 +96,14 @@
 		"z": "871b020ccee144a3",
 		"g": "168e27782caf3257",
 		"name": "\"good\" inputs - will not trigger an alarm, will clear existing alarm",
-		"style": { "label": true },
-		"nodes": [ "15ee90973f804cea", "b3848510c5238c88", "0b07debb08f79773" ],
+		"style": {
+			"label": true
+		},
+		"nodes": [
+			"15ee90973f804cea",
+			"b3848510c5238c88",
+			"0b07debb08f79773"
+		],
 		"x": 74,
 		"y": 499,
 		"w": 412,
@@ -38,8 +115,13 @@
 		"z": "871b020ccee144a3",
 		"g": "168e27782caf3257",
 		"name": "\"bad\" inputs - will trigger an alarm",
-		"style": { "label": true },
-		"nodes": [ "cf3c98cc7300ec66", "5bcae1e72660d5dc" ],
+		"style": {
+			"label": true
+		},
+		"nodes": [
+			"cf3c98cc7300ec66",
+			"5bcae1e72660d5dc"
+		],
 		"x": 74,
 		"y": 639,
 		"w": 216,
@@ -51,48 +133,38 @@
 		"z": "871b020ccee144a3",
 		"g": "168e27782caf3257",
 		"name": "set msg.enable to true or false - false will clear any alarm condition and ignore all input",
-		"style": { "label": true },
-		"nodes": [ "4a77de386e770789", "28495ec5a045165f" ],
+		"style": {
+			"label": true
+		},
+		"nodes": [
+			"4a77de386e770789",
+			"28495ec5a045165f"
+		],
 		"x": 74,
 		"y": 359,
 		"w": 543,
 		"h": 122
 	},
 	{
-		"id": "4cccddb3717e5f7d",
+		"id": "aae0065dba52b05a",
 		"type": "group",
 		"z": "871b020ccee144a3",
-		"name": "The condition monitor has a high and low limit setpoint. Alarm conditions can be 'high' or 'low' alarms. ",
-		"style": { "label": true },
-		"nodes": [ "f48c9dcc7246f079", "b61d31bbf65740ae", "a25ebfabd83fbd2c", "1215eb08c0bd4199", "1e9d1484902ac894", "2d07d567af863511", "1fe4c3dbc04fdeae", "6bbeed87c8032e99" ],
-		"x": 54,
-		"y": 59,
-		"w": 992,
-		"h": 262
-	},
-	{
-		"id": "fa7c5a52988d7128",
-		"type": "group",
-		"z": "871b020ccee144a3",
-		"name": "The alarm emitter will manage all alarm input nodes and their messages. If configured, can delay sending an output and/or resend the output at an interval.",
-		"style": { "label": true },
-		"nodes": [ "fc656cfce48d971d", "57a5c741b402fd8b" ],
-		"x": 54,
+		"name": "Example of an email notification template.",
+		"style": {
+			"label": true
+		},
+		"nodes": [
+			"f0ebf26ea304fb2b",
+			"d9c85b46d63349d2",
+			"a70b0470aaf2608b",
+			"37bfe087469a4fc0",
+			"01b6ed6a03e56d0b",
+			"35b7523958cd77db"
+		],
+		"x": 1034,
 		"y": 859,
-		"w": 967,
-		"h": 82
-	},
-	{
-		"id": "53235f57e9a28722",
-		"type": "group",
-		"z": "871b020ccee144a3",
-		"name": "The alarms persistence hook allows for connections to a persistent storage module or sending alarm events to a log file or database.",
-		"style": { "label": true },
-		"nodes": [ "38c4ae42388aa3d9", "653495cf30d5f01d", "92eceb24d8d35cef", "58a6170b1db4b868", "e67ebb4e7a49ccfb", "d3c84997dcd6e5ef", "7fac5a3681f918fb" ],
-		"x": 54,
-		"y": 979,
-		"w": 1272,
-		"h": 222
+		"w": 692,
+		"h": 142
 	},
 	{
 		"id": "4be3227da3951794",
@@ -100,17 +172,25 @@
 		"z": "871b020ccee144a3",
 		"g": "168e27782caf3257",
 		"x": 460,
-		"y": 440,
-		"wires": [ [ "c8817fbe8dcfd628" ] ]
+		"y": 400,
+		"wires": [
+			[
+				"c8817fbe8dcfd628"
+			]
+		]
 	},
 	{
 		"id": "b2861ad9743b25e1",
 		"type": "junction",
 		"z": "871b020ccee144a3",
 		"g": "168e27782caf3257",
-		"x": 440,
-		"y": 620,
-		"wires": [ [ "c8817fbe8dcfd628" ] ]
+		"x": 460,
+		"y": 680,
+		"wires": [
+			[
+				"c8817fbe8dcfd628"
+			]
+		]
 	},
 	{
 		"id": "0b07debb08f79773",
@@ -119,7 +199,11 @@
 		"g": "b122b1b15ef683eb",
 		"x": 460,
 		"y": 540,
-		"wires": [ [ "c8817fbe8dcfd628" ] ]
+		"wires": [
+			[
+				"c8817fbe8dcfd628"
+			]
+		]
 	},
 	{
 		"id": "1fe4c3dbc04fdeae",
@@ -127,8 +211,12 @@
 		"z": "871b020ccee144a3",
 		"g": "4cccddb3717e5f7d",
 		"x": 580,
-		"y": 100,
-		"wires": [ [ "a25ebfabd83fbd2c" ] ]
+		"y": 80,
+		"wires": [
+			[
+				"a25ebfabd83fbd2c"
+			]
+		]
 	},
 	{
 		"id": "6bbeed87c8032e99",
@@ -136,8 +224,12 @@
 		"z": "871b020ccee144a3",
 		"g": "4cccddb3717e5f7d",
 		"x": 580,
-		"y": 240,
-		"wires": [ [ "a25ebfabd83fbd2c" ] ]
+		"y": 220,
+		"wires": [
+			[
+				"a25ebfabd83fbd2c"
+			]
+		]
 	},
 	{
 		"id": "fc656cfce48d971d",
@@ -148,49 +240,43 @@
 		"debug": false,
 		"alarmManager": "49627fa8b743bf16",
 		"x": 150,
-		"y": 900,
-		"wires": [ [ "57a5c741b402fd8b" ] ]
-	},
-	{
-		"id": "57a5c741b402fd8b",
-		"type": "debug",
-		"z": "871b020ccee144a3",
-		"g": "fa7c5a52988d7128",
-		"name": "debug 1",
-		"active": true,
-		"tosidebar": true,
-		"console": false,
-		"tostatus": false,
-		"complete": "payload",
-		"targetType": "msg",
-		"statusVal": "",
-		"statusType": "auto",
-		"x": 320,
-		"y": 900,
-		"wires": []
+		"y": 940,
+		"wires": [
+			[
+				"e67ebb4e7a49ccfb",
+				"f0ebf26ea304fb2b"
+			],
+			[
+				"92eceb24d8d35cef"
+			],
+			[
+				"d3c84997dcd6e5ef"
+			]
+		]
 	},
 	{
 		"id": "38c4ae42388aa3d9",
 		"type": "persistence-hook",
 		"z": "871b020ccee144a3",
-		"g": "53235f57e9a28722",
+		"g": "dc384bf00be008c6",
 		"name": "",
 		"debug": false,
 		"alarmManager": "49627fa8b743bf16",
 		"x": 590,
-		"y": 1080,
-		"wires": [
-			[ "92eceb24d8d35cef", "e67ebb4e7a49ccfb" ],
-			[ "d3c84997dcd6e5ef" ]
-		]
+		"y": 1140,
+		"wires": []
 	},
 	{
 		"id": "653495cf30d5f01d",
 		"type": "inject",
 		"z": "871b020ccee144a3",
-		"g": "53235f57e9a28722",
+		"g": "dc384bf00be008c6",
 		"name": "Send the persisted alarm storage on startup.",
-		"props": [ { "p": "payload" } ],
+		"props": [
+			{
+				"p": "payload"
+			}
+		],
 		"repeat": "",
 		"crontab": "",
 		"once": true,
@@ -199,14 +285,18 @@
 		"payload": "alarmStore",
 		"payloadType": "flow",
 		"x": 270,
-		"y": 1120,
-		"wires": [ [ "38c4ae42388aa3d9" ] ]
+		"y": 1180,
+		"wires": [
+			[
+				"38c4ae42388aa3d9"
+			]
+		]
 	},
 	{
 		"id": "92eceb24d8d35cef",
 		"type": "change",
 		"z": "871b020ccee144a3",
-		"g": "53235f57e9a28722",
+		"g": "fa7c5a52988d7128",
 		"name": "",
 		"rules": [
 			{
@@ -222,15 +312,17 @@
 		"from": "",
 		"to": "",
 		"reg": false,
-		"x": 870,
-		"y": 1080,
-		"wires": [ [] ]
+		"x": 390,
+		"y": 940,
+		"wires": [
+			[]
+		]
 	},
 	{
 		"id": "58a6170b1db4b868",
 		"type": "inject",
 		"z": "871b020ccee144a3",
-		"g": "53235f57e9a28722",
+		"g": "dc384bf00be008c6",
 		"name": "Set msg.reset to true to clear ALL alarms.",
 		"props": [
 			{
@@ -245,14 +337,18 @@
 		"onceDelay": 0.1,
 		"topic": "",
 		"x": 280,
-		"y": 1040,
-		"wires": [ [ "38c4ae42388aa3d9" ] ]
+		"y": 1100,
+		"wires": [
+			[
+				"38c4ae42388aa3d9"
+			]
+		]
 	},
 	{
 		"id": "e67ebb4e7a49ccfb",
 		"type": "debug",
 		"z": "871b020ccee144a3",
-		"g": "53235f57e9a28722",
+		"g": "fa7c5a52988d7128",
 		"name": "See comment --->",
 		"active": false,
 		"tosidebar": true,
@@ -262,8 +358,8 @@
 		"targetType": "msg",
 		"statusVal": "",
 		"statusType": "auto",
-		"x": 870,
-		"y": 1020,
+		"x": 390,
+		"y": 900,
 		"wires": []
 	},
 	{
@@ -285,8 +381,12 @@
 		"onceDelay": 0.1,
 		"topic": "",
 		"x": 150,
-		"y": 140,
-		"wires": [ [ "1fe4c3dbc04fdeae" ] ]
+		"y": 120,
+		"wires": [
+			[
+				"1fe4c3dbc04fdeae"
+			]
+		]
 	},
 	{
 		"id": "b61d31bbf65740ae",
@@ -307,8 +407,12 @@
 		"onceDelay": 0.1,
 		"topic": "",
 		"x": 150,
-		"y": 100,
-		"wires": [ [ "1fe4c3dbc04fdeae" ] ]
+		"y": 80,
+		"wires": [
+			[
+				"1fe4c3dbc04fdeae"
+			]
+		]
 	},
 	{
 		"id": "a25ebfabd83fbd2c",
@@ -323,14 +427,14 @@
 		"debug": false,
 		"alarmManager": "49627fa8b743bf16",
 		"x": 880,
-		"y": 220,
+		"y": 200,
 		"wires": []
 	},
 	{
 		"id": "d3c84997dcd6e5ef",
 		"type": "debug",
 		"z": "871b020ccee144a3",
-		"g": "53235f57e9a28722",
+		"g": "fa7c5a52988d7128",
 		"name": "Send this output to a file. An output is emitted after every alarm event.",
 		"active": false,
 		"tosidebar": true,
@@ -340,8 +444,8 @@
 		"targetType": "msg",
 		"statusVal": "",
 		"statusType": "auto",
-		"x": 1030,
-		"y": 1160,
+		"x": 550,
+		"y": 980,
 		"wires": []
 	},
 	{
@@ -350,7 +454,11 @@
 		"z": "871b020ccee144a3",
 		"g": "4cccddb3717e5f7d",
 		"name": "input outside limits: 8 - will trigger 'high' alarm condition",
-		"props": [ { "p": "payload" } ],
+		"props": [
+			{
+				"p": "payload"
+			}
+		],
 		"repeat": "",
 		"crontab": "",
 		"once": false,
@@ -359,8 +467,12 @@
 		"payload": "8",
 		"payloadType": "num",
 		"x": 300,
-		"y": 200,
-		"wires": [ [ "6bbeed87c8032e99" ] ]
+		"y": 180,
+		"wires": [
+			[
+				"6bbeed87c8032e99"
+			]
+		]
 	},
 	{
 		"id": "15ee90973f804cea",
@@ -368,7 +480,11 @@
 		"z": "871b020ccee144a3",
 		"g": "b122b1b15ef683eb",
 		"name": "",
-		"props": [ { "p": "payload" } ],
+		"props": [
+			{
+				"p": "payload"
+			}
+		],
 		"repeat": "",
 		"crontab": "",
 		"once": false,
@@ -378,7 +494,11 @@
 		"payloadType": "str",
 		"x": 170,
 		"y": 540,
-		"wires": [ [ "0b07debb08f79773" ] ]
+		"wires": [
+			[
+				"0b07debb08f79773"
+			]
+		]
 	},
 	{
 		"id": "cf3c98cc7300ec66",
@@ -386,7 +506,11 @@
 		"z": "871b020ccee144a3",
 		"g": "0bb5c753e5806fee",
 		"name": "",
-		"props": [ { "p": "payload" } ],
+		"props": [
+			{
+				"p": "payload"
+			}
+		],
 		"repeat": "",
 		"crontab": "",
 		"once": false,
@@ -396,7 +520,11 @@
 		"payloadType": "str",
 		"x": 170,
 		"y": 680,
-		"wires": [ [ "b2861ad9743b25e1" ] ]
+		"wires": [
+			[
+				"b2861ad9743b25e1"
+			]
+		]
 	},
 	{
 		"id": "b3848510c5238c88",
@@ -404,7 +532,11 @@
 		"z": "871b020ccee144a3",
 		"g": "b122b1b15ef683eb",
 		"name": "",
-		"props": [ { "p": "payload" } ],
+		"props": [
+			{
+				"p": "payload"
+			}
+		],
 		"repeat": "",
 		"crontab": "",
 		"once": false,
@@ -414,7 +546,11 @@
 		"payloadType": "str",
 		"x": 170,
 		"y": 580,
-		"wires": [ [ "0b07debb08f79773" ] ]
+		"wires": [
+			[
+				"0b07debb08f79773"
+			]
+		]
 	},
 	{
 		"id": "5bcae1e72660d5dc",
@@ -422,7 +558,11 @@
 		"z": "871b020ccee144a3",
 		"g": "0bb5c753e5806fee",
 		"name": "",
-		"props": [ { "p": "payload" } ],
+		"props": [
+			{
+				"p": "payload"
+			}
+		],
 		"repeat": "",
 		"crontab": "",
 		"once": false,
@@ -432,7 +572,11 @@
 		"payloadType": "str",
 		"x": 170,
 		"y": 720,
-		"wires": [ [ "b2861ad9743b25e1" ] ]
+		"wires": [
+			[
+				"b2861ad9743b25e1"
+			]
+		]
 	},
 	{
 		"id": "5372b6b9d5a5fdcf",
@@ -440,7 +584,11 @@
 		"z": "871b020ccee144a3",
 		"g": "168e27782caf3257",
 		"name": "input that does not match \"good\" or \"bad\" inputs - is ignored",
-		"props": [ { "p": "payload" } ],
+		"props": [
+			{
+				"p": "payload"
+			}
+		],
 		"repeat": "",
 		"crontab": "",
 		"once": false,
@@ -450,7 +598,11 @@
 		"payloadType": "str",
 		"x": 310,
 		"y": 800,
-		"wires": [ [ "c8817fbe8dcfd628" ] ]
+		"wires": [
+			[
+				"c8817fbe8dcfd628"
+			]
+		]
 	},
 	{
 		"id": "c8817fbe8dcfd628",
@@ -490,7 +642,11 @@
 		"topic": "",
 		"x": 170,
 		"y": 440,
-		"wires": [ [ "4be3227da3951794" ] ]
+		"wires": [
+			[
+				"4be3227da3951794"
+			]
+		]
 	},
 	{
 		"id": "28495ec5a045165f",
@@ -512,7 +668,11 @@
 		"topic": "",
 		"x": 170,
 		"y": 400,
-		"wires": [ [ "4be3227da3951794" ] ]
+		"wires": [
+			[
+				"4be3227da3951794"
+			]
+		]
 	},
 	{
 		"id": "1e9d1484902ac894",
@@ -520,7 +680,11 @@
 		"z": "871b020ccee144a3",
 		"g": "4cccddb3717e5f7d",
 		"name": "input within limits: 6 - will clear an alarm condition",
-		"props": [ { "p": "payload" } ],
+		"props": [
+			{
+				"p": "payload"
+			}
+		],
 		"repeat": "",
 		"crontab": "",
 		"once": false,
@@ -529,8 +693,12 @@
 		"payload": "6",
 		"payloadType": "num",
 		"x": 280,
-		"y": 240,
-		"wires": [ [ "6bbeed87c8032e99" ] ]
+		"y": 220,
+		"wires": [
+			[
+				"6bbeed87c8032e99"
+			]
+		]
 	},
 	{
 		"id": "2d07d567af863511",
@@ -538,7 +706,11 @@
 		"z": "871b020ccee144a3",
 		"g": "4cccddb3717e5f7d",
 		"name": "input outside limits: 4 - will trigger 'low' alarm condition",
-		"props": [ { "p": "payload" } ],
+		"props": [
+			{
+				"p": "payload"
+			}
+		],
 		"repeat": "",
 		"crontab": "",
 		"once": false,
@@ -547,25 +719,156 @@
 		"payload": "4",
 		"payloadType": "num",
 		"x": 300,
-		"y": 280,
-		"wires": [ [ "6bbeed87c8032e99" ] ]
+		"y": 260,
+		"wires": [
+			[
+				"6bbeed87c8032e99"
+			]
+		]
 	},
 	{
 		"id": "7fac5a3681f918fb",
 		"type": "comment",
 		"z": "871b020ccee144a3",
-		"g": "53235f57e9a28722",
+		"g": "fa7c5a52988d7128",
 		"name": "",
 		"info": "send this output to your flow or global \ncontext store. This allows you to see what\nalarms are present in the alarm manager\nwithout sending outputs from the alarm \nemitter. This can also  be used to persist\nthe alarm storage between restarts.",
-		"x": 1060,
-		"y": 1020,
+		"x": 600,
+		"y": 900,
+		"wires": []
+	},
+	{
+		"id": "f0ebf26ea304fb2b",
+		"type": "split",
+		"z": "871b020ccee144a3",
+		"g": "aae0065dba52b05a",
+		"name": "",
+		"splt": "\\n",
+		"spltType": "str",
+		"arraySplt": 1,
+		"arraySpltType": "len",
+		"stream": false,
+		"addname": "",
+		"x": 1110,
+		"y": 900,
+		"wires": [
+			[
+				"a70b0470aaf2608b"
+			]
+		]
+	},
+	{
+		"id": "d9c85b46d63349d2",
+		"type": "join",
+		"z": "871b020ccee144a3",
+		"g": "aae0065dba52b05a",
+		"name": "",
+		"mode": "custom",
+		"build": "array",
+		"property": "payload",
+		"propertyType": "msg",
+		"key": "topic",
+		"joiner": "\\n",
+		"joinerType": "str",
+		"accumulate": false,
+		"timeout": "",
+		"count": "",
+		"reduceRight": false,
+		"reduceExp": "",
+		"reduceInit": "",
+		"reduceInitType": "",
+		"reduceFixup": "",
+		"x": 1470,
+		"y": 900,
+		"wires": [
+			[
+				"37bfe087469a4fc0"
+			]
+		]
+	},
+	{
+		"id": "a70b0470aaf2608b",
+		"type": "function",
+		"z": "871b020ccee144a3",
+		"g": "aae0065dba52b05a",
+		"name": "template lambdas",
+		"func": "if (msg.payload.clearTimestamp) {\n    msg.payload.duration = Number(((msg.payload.clearTimestamp - msg.payload.alarmTimestamp) / 1000).toFixed(0));\n}\n\nmsg.payload.toLocaleString = function() {\n    return function(input, render) {\n        return new Date(Number(render(input))).toLocaleString('en-US')\n    }\n};\n\nmsg.payload.durationString = function() {\n    return function(input,render) {\n        input = Number(render(input));\n        return (input / 60).toFixed(0) +\n            ' minute' +\n            ((input / 60).toFixed(0) == '1' ? ', ' : 's, ') +\n            (input % 60) +\n            ' second' +\n            (input % 60 == 1 ? '.' : 's.');\n    }\n}\nreturn msg;",
+		"outputs": 1,
+		"noerr": 0,
+		"initialize": "",
+		"finalize": "",
+		"libs": [],
+		"x": 1290,
+		"y": 900,
+		"wires": [
+			[
+				"d9c85b46d63349d2"
+			]
+		]
+	},
+	{
+		"id": "37bfe087469a4fc0",
+		"type": "function",
+		"z": "871b020ccee144a3",
+		"g": "aae0065dba52b05a",
+		"name": "sort new/persistant",
+		"func": "let clearAlarms = [];\nlet newAlarms = [];\nlet persistentAlarms = [];\n\n//sort new/clear/persistant alarms\nmsg.payload.forEach(alarm => {\n    if (!alarm.limit) {\n        alarm.limit = '--';\n    }\n\n    if (alarm.type == 'clear') {\n        clearAlarms.push(alarm);\n    } else if (alarm.persistent === true) {\n        persistentAlarms.push(alarm);\n    } else {\n        newAlarms.push(alarm);\n    }\n})\n\n//sort those arrays by alarmTimestamp\nclearAlarms.sort((a,b) => {\n    return b.alarmTimestamp - a.alarmTimestamp;\n});\n\nnewAlarms.sort((a, b) => {\n    return b.alarmTimestamp - a.alarmTimestamp;\n});\n\npersistentAlarms.sort((a, b) => {\n    return b.alarmTimestamp - a.alarmTimestamp;\n});\n\nmsg.payload = {\n    clearAlarms: clearAlarms,\n    newAlarms: newAlarms,\n    persistentAlarms: persistentAlarms\n}\n\nreturn msg;",
+		"outputs": 1,
+		"noerr": 0,
+		"initialize": "",
+		"finalize": "",
+		"libs": [],
+		"x": 1170,
+		"y": 960,
+		"wires": [
+			[
+				"01b6ed6a03e56d0b"
+			]
+		]
+	},
+	{
+		"id": "01b6ed6a03e56d0b",
+		"type": "template",
+		"z": "871b020ccee144a3",
+		"g": "aae0065dba52b05a",
+		"name": "",
+		"field": "payload",
+		"fieldType": "msg",
+		"format": "html",
+		"syntax": "mustache",
+		"template": "<style>\n    table, th, td {\n    border: 1px solid black;\n    border-collapse: collapse;\n    }\n</style>\n\n{{#payload.clearAlarms.length}}\n<h1>Clear Alarms</h1>\n<table>\n    <th>Alarm ID</th>\n    <th>Value</th>\n    <th>Start Time Stamp</th>\n    <th>End Timestamp</th>\n    <th>Duration</th>\n    {{#payload.clearAlarms}}\n    <tr>\n        <td>{{id}}</td>\n        <td>{{value}}</td>\n        <td>{{#toLocaleString}}{{alarmTimestamp}}{{/toLocaleString}}</td>\n        <td>{{#toLocaleString}}{{clearTimestamp}}{{/toLocaleString}}</td>\n        <td>{{#duration}}{{#durationString}}{{duration}}{{/durationString}}{{/duration}}</td>\n    </tr>\n    {{/payload.clearAlarms}}\n</table>\n<br>\n{{/payload.clearAlarms.length}}\n{{#payload.newAlarms.length}}\n<h1>New Alarms</h1>\n<table>\n    <th>Alarm ID</th>\n    <th>Type</th>\n    <th>Value</th>\n    <th>Limit</th>\n    <th>Start Time Stamp</th>\n    {{#payload.newAlarms}}\n    <tr>\n        <td>{{id}}</td>\n        <td>{{type}}</td>\n        <td>{{value}}</td>\n        <td>{{limit}}</td>\n        <td>{{#toLocaleString}}{{alarmTimestamp}}{{/toLocaleString}}</td>\n    </tr>\n    {{/payload.newAlarms}}\n</table>\n<br>\n{{/payload.newAlarms.length}}\n{{#payload.persistentAlarms.length}}\n<h1>Persistent Alarms</h1>\n<table>\n    <th>Alarm ID</th>\n    <th>Type</th>\n    <th>Value</th>\n    <th>Limit</th>\n    <th>Start Time Stamp</th>\n    {{#payload.persistentAlarms}}\n    <tr>\n        <td>{{id}}</td>\n        <td>{{type}}</td>\n        <td>{{value}}</td>\n        <td>{{limit}}</td>\n        <td>{{#toLocaleString}}{{alarmTimestamp}}{{/toLocaleString}}</td>\n    </tr>\n    {{/payload.persistentAlarms}}\n</table>\n<br>\n{{/payload.persistentAlarms.length}}",
+		"output": "str",
+		"x": 1360,
+		"y": 960,
+		"wires": [
+			[
+				"35b7523958cd77db"
+			]
+		]
+	},
+	{
+		"id": "35b7523958cd77db",
+		"type": "debug",
+		"z": "871b020ccee144a3",
+		"g": "aae0065dba52b05a",
+		"name": "example email notification",
+		"active": true,
+		"tosidebar": true,
+		"console": false,
+		"tostatus": false,
+		"complete": "payload",
+		"targetType": "msg",
+		"statusVal": "",
+		"statusType": "auto",
+		"x": 1570,
+		"y": 960,
 		"wires": []
 	},
 	{
 		"id": "49627fa8b743bf16",
 		"type": "alarm-manager",
 		"name": "manager 1",
-		"delayMinutes": "0.04",
+		"delayMinutes": "0.16",
 		"resendMinutes": "0.16",
 		"debug": false
 	}

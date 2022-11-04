@@ -35,4 +35,28 @@
 
 <script type="text/html" data-help-name="alarm-manager">
 	<p>A node to manage several alarm conditions from several sources, aggregate, and control the output of message to be sent over communications (email, etc)</p>
+
+	<h3>Properties</h3>
+		<dl class="message-properties">
+			<dt>Name
+				<span class="property-type">string</span>
+			</dt>
+			<dd> the name of the alarm manager configuration. </dd>
+			<dt>Delay 
+				<span class="property-type">number</span></dt>
+			<dd> the time (in minutes) that new alarms should be held before sending an alarm output. This allows multiple new alarms to be aggregated into one alarm output instead of multiple outputs in quick succession. (0 = no delay. Not recommended) </dd>
+			<dt>Resend on interval
+				<span class="property-type">number</span>
+			</dt>
+			<dd> the time (in minutes) that active alarms should be resent. By enabling this interval, any alarms that are send a second time will include the <code>persistent</code> property. (0 = do not resend) </dd>
+		</dl>
+		
+	<h3>Details</h3>
+		<p>As new alarms objects are received from the connected monitor nodes, 
+			they are held in memory until the configured "delay" period has elapsed, after which, 
+			the alarms are sent as a single message containing all received alarms. If new alarms are received, the delay period is restarted.
+			If no new alarms or cleared alarms are received, the existing alarms will be resent after the "resend on interval" period has elapsed, unless it is set to 0.
+			When alarms are resent, they will be identified by the <code>persistent</code> property set to <code>true</code>. 
+			When alarms are cleared, they are identified by the <code>type</code> property set to 'clear'. Clear alarms are sent after the "delay" period has elapsed.
+		</p>
 </script>

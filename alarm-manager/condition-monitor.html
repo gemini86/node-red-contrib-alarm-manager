@@ -42,38 +42,60 @@
 <script type="text/html" data-template-name="condition-monitor">
 	<div class="form-row">
 		<label for="node-input-alarmManager"><i class="fa fa-android"></i> Alarm Manager</label>
-		<input type="text" id="node-input-alarmManager" >
+		<input type="text" id="node-input-alarmManager" style="width: 70%;">
 	</div>
 	<div class="form-row">
 		<label for="node-input-alarmId">Alarm Id</label>
-		<input type="text" id="node-input-alarmId" placeholder="">
+		<input type="text" id="node-input-alarmId" style="width: 70%;">
 		<input type="hidden" id="node-input-alarmId-type">
 	</div>
 	<div class="form-row">
 		<label for="node-input-highAlarm">High Alarm</label>
-		<input type="text" id="node-input-highAlarm" placeholder="">
+		<input type="text" id="node-input-highAlarm" style="width: 70%;">
 		<input type="hidden" id="node-input-highAlarm-type">
 	</div>
 	<div class="form-row">
 		<label for="node-input-lowAlarm">Low Alarm</label>
-		<input type="text" id="node-input-lowAlarm" placeholder="">
+		<input type="text" id="node-input-lowAlarm" style="width: 70%;">
 		<input type="hidden" id="node-input-lowAlarm-type">
 	</div>
 	<div class="form-row">
 		<label for="node-input-delayMinutes">Delay (minutes)</label>
-		<input type="text" id="node-input-delayMinutes" placeholder="">
+		<input type="text" id="node-input-delayMinutes" style="width: 70%;">
 		<input type="hidden" id="node-input-delayMinutes-type">
 	</div>
 	<div class="form-row">
-		<label for="node-input-debug"><i class="fa fa-bug"></i> Debug</label>
-		<input type="checkbox" id="node-input-debug" placeholder="">
+		<label style="text-align: center;"><i class="fa fa-bug"></i></label>
+		<input type="checkbox" id="node-input-debug" style="width: auto;">
+		<label for="node-input-debug" style="width: auto;">Debug</label>
 	</div>
 	<div class="form-row">
 		<label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-		<input type="text" id="node-input-name" placeholder="">
+		<input type="text" id="node-input-name" style="width: 70%;">
 	</div>
 </script>
 
 <script type="text/html" data-help-name="condition-monitor">
-	<p>monitors conditions</p>
+	<p>monitors numeric payloads and compares against configured high and low setpoints</p>
+
+	<h3>Inputs</h3>
+	<dl class="message-properties">
+		<dt>payload
+			<span class="property-type">number</span>
+		</dt>
+		<dd> the payload to be compared against the configured 'High Alarm' and 'Low Alarm' setpoints </dd>
+		<dt class="optional">enabled <span class="property-type">boolean</span></dt>
+		<dd> setting <code>msg.enabled</code> to <code>false</code> will clear any pending or sent alarms and will disable any
+			further input to the node. Setting it to <code>true</code> again will restore functionality.</dd>
+	</dl>
+	
+	<h3>Details</h3>
+	<p><code>msg.payload</code> is checked against the 'High Alarm' and 'Low Alarm' setpoints configured.
+		A payload that is greater than or equal to 'High Alarm' will trigger an alarm condition.
+		A payload that is less than or equal to 'Low Alarm' will trigger an alarm condition.
+		After an alarm condition is triggered, the node will wait for the 'Delay' period that is configured before sending the alarm to the alarm manager.
+		A payload that is between 'High Alarm' and 'Low Alarm' will clear the alarm condition. If the alarm is still pending (the node is still waiting for the 'Delay' period to elapse),
+		the alarm is immediately cleared. If an alarm condition has already been sent to the alarm manager before an alarm is cleared, the node will send a 'clear' alarm type to the alarm manager immediately.
+	</p>
+
 </script>

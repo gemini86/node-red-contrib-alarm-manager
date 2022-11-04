@@ -18,7 +18,7 @@ module.exports = function (RED) {
 
 				if (msg.reset) {
 					node.alarmManager.clearAlarms();
-					send([{},null]);
+					send([{}]);
 				}
 				if (msg.payload) {
 					node.alarmManager.loadAlarms(msg.payload);
@@ -27,14 +27,6 @@ module.exports = function (RED) {
 				if (done) {
 					done();
 				}
-			});
-
-			node.alarmManager.on('persist', (msg) => {
-				node.send([msg,null]);
-			});
-
-			node.alarmManager.on('alarmEvent', (msg) => {
-				node.send([null, msg]);
 			});
 		}
 	}

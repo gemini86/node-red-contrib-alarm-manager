@@ -48,47 +48,79 @@
 <script type="text/html" data-template-name="status-monitor">
 	<div class="form-row">
 		<label for="node-input-alarmManager"><i class="fa fa-android"></i> Alarm Manager</label>
-		<input type="text" id="node-input-alarmManager">
+		<input type="text" id="node-input-alarmManager" style="width: 70%;">
 	</div>
 	<div class="form-row">
 		<label for="node-input-alarmId">Alarm Id</label>
-		<input type="text" id="node-input-alarmId" placeholder="">
+		<input type="text" id="node-input-alarmId" style="width: 70%;">
 		<input type="hidden" id="node-input-alarmId-type">
 	</div>
 	<div class="form-row">
-		<label for="node-input-alarmType">The alarm type that should be displayed</label>
-		<input type="text" id="node-input-alarmType" placeholder="fault">
+		<label for="node-input-alarmType">Alarm Type</label>
+		<input type="text" id="node-input-alarmType" placeholder="fault" style="width: 70%;">
 		<input type="hidden" id="node-input-alarmType-type">
 	</div>
 	<div class="form-row">
-		<label for="node-input-goodInputs">Good input string(s) (separate multiple values with a comma)</label>
-		<input type="text" id="node-input-goodInputs" placeholder="">
+		<label for="node-input-goodInputs">Good input string(s) (see note 1)</label>
+		<input type="text" id="node-input-goodInputs" style="width: 70%;">
 		<input type="hidden" id="node-input-goodInputs-type">
 	</div>
 	<div class="form-row">
-		<label for="node-input-badInputs">Bad input string(s) (separate multiple values with a comma)</label>
-		<input type="text" id="node-input-badInputs" placeholder="">
+		<label for="node-input-badInputs">Bad input string(s) (see note 1)</label>
+		<input type="text" id="node-input-badInputs" style="width: 70%;">
 		<input type="hidden" id="node-input-badInputs-type">
 	</div>
 	<div class="form-row">
-		<label for="node-input-delayMinutes">Delay to send alarm(minutes)</label>
-		<input type="text" id="node-input-delayMinutes" placeholder="5">
+		<label for="node-input-delayMinutes">Delay to send</label>
+		<input type="text" id="node-input-delayMinutes" placeholder="5" style="width: 70px; margin-right: 5px;" autocomplete="off">
 		<input type="hidden" id="node-input-delayMinutes-type">
+		<span style="width:auto;"> minutes</span>
 	</div>
 	<div class="form-row">
-		<label for="node-input-strictlyBoolean">Ignore payloads that do not match good or bad inputs? (Boolean values will still trigger alarms, eg. false = alarm, true = clear)</label>
-		<input type="checkbox" id="node-input-strictlyBoolean" placeholder="">
+		<label></label>
+		<input type="checkbox" id="node-input-strictlyBoolean" style="width:auto;">
+		<label for="node-input-strictlyBoolean" style="width: 70%;">Ignore payloads that do not match good or bad inputs? (see note 2)</label>
 	</div>
 	<div class="form-row">
-		<label for="node-input-debug"><i class="fa fa-bug"></i> Debug</label>
-		<input type="checkbox" id="node-input-debug" placeholder="">
+		<label style="text-align: center;"><i class="fa fa-bug"></i></label>
+		<input type="checkbox" id="node-input-debug" style="width:auto;">
+		<label for="node-input-debug">Debug</label>
 	</div>
 	<div class="form-row">
 		<label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-		<input type="text" id="node-input-name" placeholder="">
+		<input type="text" id="node-input-name" style="width: 70%;">
+	</div>
+	<div class="form-tips">
+		Notes:<br>
+		1. separate multiple values with a comma<br>
+		2. payloads with boolean values will still trigger alarm conditions.<br>
+		eg. <code>false</code> will trigger an alarm condition, <code>true</code> will clear it.
 	</div>
 </script>
 
 <script type="text/html" data-help-name="status-monitor">
 	<p>monitors status strings or boolean true/false conditions</p>
+
+	<h3>Inputs</h3>
+	<dl class="message-properties">
+		<dt>payload
+			<span class="property-type">string</span>
+		</dt>
+		<dd> the string that should be compared to the 'good' and 'bad' strings lists. </dd>
+		<dt class="optional">enabled <span class="property-type">boolean</span></dt>
+		<dd> setting <code>msg.enabled</code> to <code>false</code> will clear any pending or sent alarms and will disable any further input to the node. Setting it to <code>true</code> again will restore functionality.</dd>
+	</dl>
+	
+	<h3>Details</h3>
+	<p><code>msg.payload</code> is checked against the string or strings configured in the node. This is case sensitive.
+		Eg. when 'Good input string(s)' is configured as <code>'Connected, ONLINE'</code> and 'Bad input string(s)' is configured as <code>'Disconnected, Fault, OFFLINE'</code>,
+		and input of <code>'OFFLINE'</code> is recived on the incoming <code>msg.payload</code>, the node will match the input to the value found in 'Bad input string(s)' and create an alarm condition. 
+		After the 'Delay to send alarm' period has passed, the alarm is sent to the alarm manager. If <code>'Connected'</code> is then received on the incoming <code>msg.payload</code>,
+		it is found as a match in the 'Good input string(s)' list and the alarm is cleared in the alarm manager. Any input <code>msg.payload</code> that does not match a 'good' or 'bad' string is evaluated for truthiness. 
+		A falsey input will trigger an alarm condition (eg. <code>'', [], false, null, undefined</code>)). A truthy input will clear any alarms.
+	 </p>
+	 <p>
+		If 'Ignore payloads that do not match good or bad lists' is checked, only boolean <code>true</code> or <code>false</code> will be accepted as an input other than strings matching those in the 'good' or 'bad' lists.
+	 </p>
+
 </script>

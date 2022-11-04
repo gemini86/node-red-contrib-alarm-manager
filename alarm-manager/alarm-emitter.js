@@ -12,7 +12,15 @@ module.exports = function (RED) {
 			node.status({ text: 'connected to ' + node.alarmManager.name, shape: 'dot', fill: 'green' });
 
 			node.alarmManager.on('alarms', (msg) => {
-				node.send(msg);
+				node.send([msg, null, null]);
+			});
+
+			node.alarmManager.on('persist', (msg) => {
+				node.send([null, msg, null]);
+			});
+
+			node.alarmManager.on('alarmEvent', (msg) => {
+				node.send([null, null, msg]);
 			});
 		}
 	}

@@ -78,7 +78,7 @@ module.exports = function (RED) {
 					payload: alarm
 				};
 				node.emit('alarmEvent', alarmEvent);
-				if (node.delayInterval) {
+				if (node.delayInterval > 0) {
 					//if no timeout is running, start one
 					if (!timeout.isRunning) {
 						startTimeout(node.delayInterval, 'new alarms');
@@ -107,7 +107,7 @@ module.exports = function (RED) {
 			};
 			node.emit('alarmPush', msg);
 			if (node.currentAlarms.size > 0) {
-				if (node.delayInterval) {
+				if (node.delayInterval > 0) {
 					startTimeout(node.delayInterval, 'persistent alarms');
 				} else {
 					sendAlarms(node.currentAlarms, 'persistent alarms');
@@ -123,7 +123,7 @@ module.exports = function (RED) {
 				if (node.currentAlarms.get(alarm.id).persistent) {
 					node.currentAlarms.set(alarm.id, alarm); //update alarm (this clear alarm object will have 'clearTimestamp' property with the time of alarm clearing and a 'type' property of "clear")
 					delete node.currentAlarms.get(alarm.id).persistent; //needed to make sure alarms marked as "clear" are not also marked as "persistent"
-					if (node.delayInterval) {
+					if (node.delayInterval > 0) {
 						if (!timeout.isRunning) {
 							startTimeout(node.delayInterval, 'alarms cleared');
 						}

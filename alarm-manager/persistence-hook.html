@@ -1,7 +1,7 @@
 <script type="text/javascript">
 	RED.nodes.registerType('persistence-hook',{
 		category: 'alarm manager',
-		color: '#a6bbcf',
+		color: '#e49191',
 		defaults: {
 			name: { value: '' },
 			debug: { value: false },
@@ -10,7 +10,7 @@
 		paletteLabel: 'alarms peristence hook',
 		inputs:1,
 		outputs: 0,
-		icon: 'file.svg',
+		icon: 'font-awesome/fa-exclamation-triangle',
 		label: function() {
 			return this.name || 'alarms persistence hook';
 		}

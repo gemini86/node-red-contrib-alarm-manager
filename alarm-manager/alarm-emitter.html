@@ -1,7 +1,7 @@
 <script type="text/javascript">
 	RED.nodes.registerType('alarm-emitter',{
 		category: 'alarm manager',
-		color: '#a6bbcf',
+		color: '#e49191',
 		defaults: {
 			name: { value: '' },
 			debug: { value: false },
@@ -17,7 +17,7 @@
 				'alarm event stream'
 			][i];
 		},
-		icon: "alert.svg",
+		icon: 'font-awesome/fa-exclamation-triangle',
 		label: function() {
 			return this.name || 'alarm emitter';
 		}

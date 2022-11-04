@@ -1,6 +1,6 @@
 <script type="text/javascript">RED.nodes.registerType('condition-monitor',{
 	category: 'alarm manager',
-	color: '#a6bbcf',
+	color: '#e49191',
 	defaults: {
 		name: { value: '' },
 		alarmId: { value: '', required: true },
@@ -13,7 +13,7 @@
 	paletteLabel: 'condition monitor',
 	inputs:1,
 	outputs:0,
-	icon: "alert.svg",
+	icon: 'font-awesome/fa-exclamation-triangle',
 	label: function () {
 		return this.name || `condition monitor: ${this.alarmId} (${this.highAlarm}<->${this.lowAlarm})`;
 	},

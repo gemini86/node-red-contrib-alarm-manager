@@ -1,6 +1,6 @@
 <script type="text/javascript">RED.nodes.registerType('status-monitor',{
 	category: 'alarm manager',
-	color: '#a6bbcf',
+	color: '#e49191',
 	defaults: {
 		name: { value: '' },
 		alarmId: { value: '', required: true },
@@ -15,7 +15,7 @@
 	paletteLabel: 'status monitor',
 	inputs:1,
 	outputs:0,
-	icon: "alert.svg",
+	icon: 'font-awesome/fa-exclamation-triangle',
 	label: function () {
 		return this.name || `status monitor: ${this.alarmId}`;
 	},

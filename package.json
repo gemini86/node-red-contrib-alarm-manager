@@ -3,10 +3,8 @@
 	"author": "gemini86",
 	"version": "1.0.2",
 	"keywords": [ "node-red", "alarm", "alarm manager", "alarm logger", "scheduler", "timer" ],
-	{
-		"engines": {
-			"node": ">=14.0.0"
-		}
+	"engines": {
+		"node": ">=14.0.0"
 	},
 	"node-red": {
 		"version": ">=2.0.0",

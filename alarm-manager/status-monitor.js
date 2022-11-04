@@ -37,7 +37,7 @@ module.exports = function (RED) {
 
 		function isBad(input) {
 			if (typeof input == 'boolean') {
-				return input;
+				return input == false;
 			}
 
 			if (node.badInputs) {
@@ -62,7 +62,7 @@ module.exports = function (RED) {
 
 		function isGood(input) {
 			if (typeof input == 'boolean') {
-				return input;
+				return input == true;
 			}
 
 			if (node.goodInputs) {

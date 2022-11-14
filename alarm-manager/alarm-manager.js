@@ -6,6 +6,7 @@ module.exports = function (RED) {
 		node.delayInterval = config.delayMinutes * 60000;
 		node.resendInterval = config.resendMinutes * 60000;
 		node.debug = config.debug; //when enabled, will send all new alarms to the node.log;
+		node.setMaxListeners(25);
 
 		let nodeContext = node.context();
 
@@ -312,6 +313,12 @@ module.exports = function (RED) {
 			node.stopInterval();
 			node.stopTimeout();
 			nodeContext.set('currentAlarms', node.currentAlarms);
+			node.removeAllListeners('alarmPush');
+			node.removeAllListeners('alarmEvent');
+			node.removeAllListeners('alarmRegistered');
+			node.removeAllListeners('alarmUnregistered');
+			node.removeAllListeners('alarms');
+			node.removeAllListeners('persist');
 		});
 	}
 	RED.nodes.registerType('alarm-manager', AlarmManagerNode);

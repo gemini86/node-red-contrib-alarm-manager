@@ -12,7 +12,7 @@ module.exports = function (RED) {
 			node.badInputs[i] = string.trim();
 		});
 		node.strictlyBoolean = config.strictlyBoolean;
-		node.delayInterval= config.delayMinutes * 60000;
+		node.delayInterval= Number(config.delayMinutes) * 60000;
 		node.debug = config.debug;
 		node.alarmType = config.alarmType;
 		

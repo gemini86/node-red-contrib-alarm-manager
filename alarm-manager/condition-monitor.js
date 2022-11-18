@@ -3,9 +3,9 @@ module.exports = function (RED) {
 		RED.nodes.createNode(this, config);
 		let node = this;
 		node.alarmId = config.alarmId;
-		node.highAlarm = config.highAlarm;
-		node.lowAlarm = config.lowAlarm;
-		node.delayInterval = config.delayMinutes * 60000;
+		node.highAlarm = Number(config.highAlarm);
+		node.lowAlarm = Number(config.lowAlarm);
+		node.delayInterval = Number(config.delayMinutes) * 60000;
 		node.debug = config.debug;
 
 		//retrive the config node
@@ -72,7 +72,7 @@ module.exports = function (RED) {
 
 		node.alarmManager.on('alarmPush', (msg) => {
 			if (msg.payload.has(node.alarmId)) {
-				node.alarm = msg.payload.get(node.alarmId);
+				node.alarm = {...msg.payload.get(node.alarmId)};
 				node.alarmSent = true;
 				updateStatus('alarm', node.alarm);
 			} else {

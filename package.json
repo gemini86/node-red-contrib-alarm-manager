@@ -1,7 +1,7 @@
 {
 	"name": "@gemini86/node-red-contrib-alarm-manager",
 	"author": "gemini86",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"keywords": [ "node-red", "alarm", "alarm manager", "alarm logger", "scheduler", "timer" ],
 	"engines": {
 		"node": ">=14.0.0"

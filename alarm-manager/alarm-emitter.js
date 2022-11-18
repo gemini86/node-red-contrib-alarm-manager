@@ -12,15 +12,18 @@ module.exports = function (RED) {
 			node.status({ text: 'connected to ' + node.alarmManager.name, shape: 'dot', fill: 'green' });
 
 			node.alarmManager.on('alarms', (msg) => {
-				node.send([msg, null, null]);
+				let copy = RED.util.cloneMessage(msg);
+				node.send([copy, null, null]);
 			});
 
 			node.alarmManager.on('persist', (msg) => {
-				node.send([null, msg, null]);
+				let copy = RED.util.cloneMessage(msg);
+				node.send([null, copy, null]);
 			});
 
 			node.alarmManager.on('alarmEvent', (msg) => {
-				node.send([null, null, msg]);
+				let copy = RED.util.cloneMessage(msg);
+				node.send([null, null, copy]);
 			});
 		}
 	}

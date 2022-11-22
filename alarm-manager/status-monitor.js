@@ -166,7 +166,7 @@ module.exports = function (RED) {
 						node.alarm.clearTimestamp = Date.now();
 						msg.payload = node.alarm;
 						delete node.enabled;
-						node.alarmManager.clearAlarm(msg);
+						node.alarmManager.clearAlarm(RED.util.cloneMessage(msg));
 					} else {
 						clearTimeout(node.alarmTimer);
 					}
@@ -202,7 +202,7 @@ module.exports = function (RED) {
 
 				if (node.alarmSent) {
 					updateStatus('alarm', node.alarm);
-					node.alarmManager.setAlarm(msg);
+					node.alarmManager.setAlarm(RED.util.cloneMessage(msg));
 					if (node.debug) {
 						node.warn('alarm sent: ' + JSON.stringify(node.alarm));
 					}
@@ -213,7 +213,7 @@ module.exports = function (RED) {
 							if (node.debug) {
 								node.warn('alarm sent: ' + JSON.stringify(node.alarm));
 							}
-							node.alarmManager.setAlarm(msg);
+							node.alarmManager.setAlarm(RED.util.cloneMessage(msg));
 							node.alarmSent = true;
 							updateStatus('alarm', node.alarm);
 							node.alarmTimer = clearTimeout(node.alarmTimer);
@@ -235,7 +235,7 @@ module.exports = function (RED) {
 						node.alarm.clearTimestamp = Date.now();
 						node.alarm.value = msg.payload;
 						msg.payload = node.alarm;
-						node.alarmManager.clearAlarm(msg);
+						node.alarmManager.clearAlarm(RED.util.cloneMessage(msg));
 						node.alarmSent = false;
 					} else {
 						//cancel pending alarm

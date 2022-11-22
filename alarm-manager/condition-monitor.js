@@ -194,7 +194,7 @@ module.exports = function (RED) {
 							node.alarm.clearTimestamp = Date.now();
 							node.alarm.value = msg.payload;
 							msg.payload = node.alarm;
-							node.alarmManager.clearAlarm(msg);
+							node.alarmManager.clearAlarm(RED.util.cloneMessage(msg));
 							node.alarmSent = false;
 						} else {
 							//cancel pending alarm

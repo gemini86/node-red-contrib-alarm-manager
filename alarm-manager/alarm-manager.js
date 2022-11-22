@@ -33,7 +33,7 @@ module.exports = function (RED) {
 				}
 				
 				node.alarmNodeRegistry.set(alarmNode.id, alarmNode);
-				node.emit('alarmRegistered', alarmNode.id);
+				node.emit('alarmRegistered', alarmNode.alarmId);
 
 				//if there's a stored alarm for the alarmId, return it, otherwise return nothing.
 				return node.currentAlarms.has(alarmNode.alarmId) ? node.currentAlarms.get(alarmNode.alarmId) : undefined;
@@ -43,7 +43,7 @@ module.exports = function (RED) {
 		node.unregisterAlarmNode = function (alarmNode) {
 			if (node.alarmNodeRegistry.has(alarmNode.id)) {
 				if (node.debug) {
-					node.warn('Node to be unregistered :' + alarmNode.id);
+					node.warn('Node to be unregistered :' + alarmNode.alarmId);
 				}
 				if (node.currentAlarms.has(alarmNode.alarmId)) {
 					if (node.debug) {
@@ -57,7 +57,7 @@ module.exports = function (RED) {
 					node.clearAlarm(msg);
 				}
 				node.alarmNodeRegistry.delete(alarmNode.id);
-				node.emit('alarmUnregistered', alarmNode.id);
+				node.emit('alarmUnregistered', alarmNode.alarmId);
 			}
 		};
 
@@ -269,7 +269,7 @@ module.exports = function (RED) {
 
 		function checkAlarmsCount() {
 			if (node.debug) {
-				node.warn('Check alarms count- Current alarms: ' + JSON.stringify(node.currentAlarms));
+				node.warn('Check alarms count- Current alarms: ' + JSON.stringify(Object.fromEntries(node.currentAlarms.entries())));
 			}
 			if (node.currentAlarms.size > 0) {
 				return node.currentAlarms.size;

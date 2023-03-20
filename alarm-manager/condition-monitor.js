@@ -190,11 +190,22 @@ module.exports = function (RED) {
 					if (node.alarm) {
 						if (node.alarmSent) {
 							//clear sent alarm
-							node.alarm.type = 'clear';
+							/*node.alarm.type = 'clear';
 							node.alarm.clearTimestamp = Date.now();
 							node.alarm.value = msg.payload;
 							msg.payload = node.alarm;
+							node.alarmManager.clearAlarm(RED.util.cloneMessage(msg)); */
+							
+							//copy alarm object to avoid overwriting timestamp
+							let clearedAlarm = {
+								...node.alarm,
+								type: 'clear',
+								clearTimestamp: Date.now(),
+								value: msg.payload
+							};
+							msg.payload = clearedAlarm;
 							node.alarmManager.clearAlarm(RED.util.cloneMessage(msg));
+
 							node.alarmSent = false;
 						} else {
 							//cancel pending alarm

@@ -122,8 +122,12 @@ module.exports = function (RED) {
 			if (node.currentAlarms.has(alarm.id)) {
 				//has it already been sent?
 				if (node.currentAlarms.get(alarm.id).persistent) {
-					node.currentAlarms.set(alarm.id, alarm); //update alarm (this clear alarm object will have 'clearTimestamp' property with the time of alarm clearing and a 'type' property of "clear")
-					delete node.currentAlarms.get(alarm.id).persistent; //needed to make sure alarms marked as "clear" are not also marked as "persistent"
+					//needed to make sure alarms marked as "clear" are not also marked as "persistent"
+					//delete node.currentAlarms.get(alarm.id).persistent;
+					if (alarm.persistent) {
+						delete alarm.persistent;
+					}
+					node.currentAlarms.set(alarm.id, { ...alarm }); //update alarm (this clear alarm object will have 'clearTimestamp' property with the time of alarm clearing and a 'type' property of "clear")
 					if (node.delayInterval > 0) {
 						if (!timeout.isRunning) {
 							startTimeout(node.delayInterval, 'alarms cleared');

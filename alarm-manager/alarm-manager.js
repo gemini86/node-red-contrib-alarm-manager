@@ -116,6 +116,7 @@ module.exports = function (RED) {
 			}
 		};
 
+		/*
 		node.clearAlarm = function (msg) {
 			let alarm = msg.payload;
 			//check if alarm already exists
@@ -153,6 +154,52 @@ module.exports = function (RED) {
 				node.error('This alarm does not exist and cannot be cleared: ' + alarm);
 			}
 		};
+		*/
+
+		//New clearAlarm function for bugfix
+		node.clearAlarm = function (msg) {
+			let alarm = msg.payload;
+			//check if alarm already exists
+			if (node.currentAlarms.has(alarm.id)) {
+				let existingAlarm = node.currentAlarms.get(alarm.id);
+				//has it already been sent?
+				if (existingAlarm.persistent) {
+					let updatedAlarm = {
+						...existingAlarm,
+						type: 'clear',
+						clearTimestamp: alarm.clearTimestamp,
+						persistent: false
+					};
+
+					node.currentAlarms.set(alarm.id, updatedAlarm);
+
+					if (node.delayInterval > 0) {
+						if (!timeout.isRunning) {
+							startTimeout(node.delayInterval, 'alarms cleared');
+						}
+					} else {
+						sendAlarms(node.currentAlarms, 'alarms cleared');
+					}
+				} else {
+					//if it's not been sent, delete it right away.
+					node.currentAlarms.delete(alarm.id);
+					checkAlarmsCount(); //this will check if there are other alarms and cancel any timeouts and/or intervals
+				}
+
+				let alarmEvent = {
+					payload: alarm
+				};
+				node.emit('alarmEvent', alarmEvent);
+				if (node.debug) {
+					node.warn('Alarm cleared:' + JSON.stringify(alarm));
+					nodeContext.set('currentAlarms', node.currentAlarms);
+				}
+
+			} else {
+				node.error('This alarm does not exist and cannot be cleared: ' + alarm);
+			}
+		};
+
 
 		node.clearAlarms = function () {
 			node.currentAlarms.clear();

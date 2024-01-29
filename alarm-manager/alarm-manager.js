@@ -116,46 +116,6 @@ module.exports = function (RED) {
 			}
 		};
 
-		/*
-		node.clearAlarm = function (msg) {
-			let alarm = msg.payload;
-			//check if alarm already exists
-			if (node.currentAlarms.has(alarm.id)) {
-				//has it already been sent?
-				if (node.currentAlarms.get(alarm.id).persistent) {
-					//needed to make sure alarms marked as "clear" are not also marked as "persistent"
-					//delete node.currentAlarms.get(alarm.id).persistent;
-					if (alarm.persistent) {
-						delete alarm.persistent;
-					}
-					node.currentAlarms.set(alarm.id, { ...alarm }); //update alarm (this clear alarm object will have 'clearTimestamp' property with the time of alarm clearing and a 'type' property of "clear")
-					if (node.delayInterval > 0) {
-						if (!timeout.isRunning) {
-							startTimeout(node.delayInterval, 'alarms cleared');
-						}
-					} else {
-						sendAlarms(node.currentAlarms, 'alarms cleared');
-					}
-				} else {
-					//if it's not been sent, delete it right away.
-					node.currentAlarms.delete(alarm.id);
-					checkAlarmsCount(); //this will check if there are other alarms and cancel any timeouts and/or intervals
-				}
-				let alarmEvent = {
-					payload: alarm
-				};
-				node.emit('alarmEvent', alarmEvent);
-				if (node.debug) {
-					node.warn('Alarm cleared:' + JSON.stringify(alarm));
-					nodeContext.set('currentAlarms', node.currentAlarms);
-				}
-				
-			} else {
-				node.error('This alarm does not exist and cannot be cleared: ' + alarm);
-			}
-		};
-		*/
-
 		//New clearAlarm function for bugfix
 		node.clearAlarm = function (msg) {
 			let alarm = msg.payload;
@@ -201,7 +161,7 @@ module.exports = function (RED) {
 		};
 
 
-		node.clearAlarms = function () {
+		node.clearAllAlarms = function () {
 			node.currentAlarms.clear();
 			stopInterval();
 			stopTimeout();
@@ -250,13 +210,6 @@ module.exports = function (RED) {
 				stopTimeout();
 				//check if there are alarms to send
 				checkAlarmsCount();
-				//if no interval is running
-				if (interval.isRunning == false) {
-					//start interval after sending
-					if (node.resendInterval) {
-						startInterval(node.resendInterval);
-					}
-				}
 			}, time);
 			//if there's an interval running, clear it and delete pointer.
 			if (interval.isRunning == true) {
@@ -287,7 +240,6 @@ module.exports = function (RED) {
 		}
 
 		function sendAlarms(alarms, reason) {
-			//TODO set all alarms sent as persistent after sending.
 			if (alarms.size > 0) {
 				let msg = {
 					topic: reason,
@@ -302,9 +254,18 @@ module.exports = function (RED) {
 						node.currentAlarms.get(key).persistent = true;
 					}
 				});
+				//if there are no current alarms after deleting clear alarms
 				if (node.currentAlarms.size == 0) {
 					stopInterval();
 					updatePersistence();
+				} else { //if alarms remain
+					//if no interval is running
+					if (interval.isRunning == false) {
+						//start resend interval
+						if (node.resendInterval) {
+							startInterval(node.resendInterval);
+						}
+					}
 				}
 				nodeContext.set('currentAlarms', node.currentAlarms);
 				
@@ -361,8 +322,8 @@ module.exports = function (RED) {
 		});
 
 		node.on('close', () => {
-			node.stopInterval();
-			node.stopTimeout();
+			stopInterval();
+			stopTimeout();
 			nodeContext.set('currentAlarms', node.currentAlarms);
 			node.removeAllListeners('alarmPush');
 			node.removeAllListeners('alarmEvent');

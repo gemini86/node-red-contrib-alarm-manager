@@ -17,7 +17,7 @@ module.exports = function (RED) {
 				};
 
 				if (msg.reset) {
-					node.alarmManager.clearAlarms();
+					node.alarmManager.clearAllAlarms();
 					send([{}]);
 				}
 				if (msg.payload) {

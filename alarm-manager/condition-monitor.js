@@ -5,6 +5,7 @@ module.exports = function (RED) {
 		node.alarmId = config.alarmId;
 		node.highAlarm = Number(config.highAlarm);
 		node.lowAlarm = Number(config.lowAlarm);
+		node.differential = Number(config.differential) || 0;
 		node.delayInterval = Number(config.delayMinutes) * 60000;
 		node.debug = config.debug;
 
@@ -188,14 +189,23 @@ module.exports = function (RED) {
 					updateStatus('alarm', node.alarm);
 				} else {
 					if (node.alarm) {
-						if (node.alarmSent) {
+						let clearCond = false;
+						if (node.alarm.type === 'high') {
+							clearCond = msg.payload < node.highAlarm - node.differential;
+						} else if (node.alarm.type === 'low') {
+							clearCond = msg.payload > node.lowAlarm + node.differential;
+						} else {
+							clearCond = true;
+						}
+	
+						if (clearCond && node.alarmSent) {
 							//clear sent alarm
 							/*node.alarm.type = 'clear';
-							node.alarm.clearTimestamp = Date.now();
-							node.alarm.value = msg.payload;
-							msg.payload = node.alarm;
-							node.alarmManager.clearAlarm(RED.util.cloneMessage(msg)); */
-							
+                                                        node.alarm.clearTimestamp = Date.now();
+                                                        node.alarm.value = msg.payload;
+                                                        msg.payload = node.alarm;
+                                                        node.alarmManager.clearAlarm(RED.util.cloneMessage(msg)); */
+
 							//copy alarm object to avoid overwriting timestamp
 							let clearedAlarm = {
 								...node.alarm
@@ -206,13 +216,15 @@ module.exports = function (RED) {
 							msg.payload = clearedAlarm;
 							node.alarmManager.clearAlarm(msg);
 							node.alarmSent = false;
-						} else {
+						} else if (clearCond) {
 							//cancel pending alarm
 							node.alarm.value = msg.payload;
 							node.alarmTimer = clearTimeout(node.alarmTimer);
 						}
-						updateStatus('clear', node.alarm);
-						delete node.alarm;
+						if (clearCond) {
+							updateStatus('clear', node.alarm);
+							delete node.alarm;
+						}
 					}
 				}
 			}

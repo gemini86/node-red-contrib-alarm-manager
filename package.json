@@ -2,7 +2,14 @@
 	"name": "@gemini86/node-red-contrib-alarm-manager",
 	"author": "gemini86",
 	"version": "1.1.4",
-	"keywords": [ "node-red", "alarm", "alarm manager", "alarm logger", "scheduler", "timer" ],
+	"keywords": [
+		"node-red",
+		"alarm",
+		"alarm manager",
+		"alarm logger",
+		"scheduler",
+		"timer"
+	],
 	"engines": {
 		"node": ">=14.0.0"
 	},
@@ -16,10 +23,16 @@
 			"status-monitor": "alarm-manager/status-monitor.js"
 		}
 	},
-	"devDependencies": {
-		"eslint": "^8.25.0"
-	},
-	"repository": {
+        "devDependencies": {
+                "eslint": "^8.25.0",
+                "mocha": "^9.2.2",
+                "node-red": "^4.0.9",
+                "node-red-node-test-helper": "^0.3.4"
+        },
+        "scripts": {
+                "test": "mocha 'test/**/*.spec.js'"
+        },
+        "repository": {
 		"type": "git",
 		"url": "git+https://github.com/gemini86/node-red-contrib-alarm-manager.git"
 	},

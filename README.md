@@ -25,11 +25,11 @@ Monitors condition and status inputs and aggregates alarms conditions into a sin
 
 **Details:**
 
-`msg.payload` is checked against the 'High Alarm' and 'Low Alarm' setpoints configured.
+`msg.payload` is checked against the 'High Alarm' and 'Low Alarm' setpoints configured. Optionally, a `Differential` value can be specified to delay clearing an active alarm.
 A payload that is greater than or equal to 'High Alarm' will trigger an alarm condition.
 A payload that is less than or equal to 'Low Alarm' will trigger an alarm condition.
 After an alarm condition is triggered, the node will wait for the 'Delay' period that is configured before sending the alarm to the alarm manager.
-A payload that is between 'High Alarm' and 'Low Alarm' will clear the alarm condition. If the alarm is still pending (the node is still waiting for the 'Delay' period to elapse),
+A payload that is between 'High Alarm' and 'Low Alarm' will clear the alarm condition. When differential is configured, the alarm clears only when the payload crosses the differential threshold relative to the active setpoint. If the alarm is still pending (the node is still waiting for the 'Delay' period to elapse),
 the alarm is immediately cleared. If an alarm condition has already been sent to the alarm manager before an alarm is cleared, the node will send a 'clear' alarm type to the alarm manager immediately.
 
 ### _Status Monitor_
